@@ -1,0 +1,4 @@
+{
+    "words": ["youth-books", "youthbooks"],
+    "ignorePaths": ["*.log", "commitlint.config.ts"]
+}

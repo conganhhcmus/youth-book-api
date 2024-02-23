@@ -1,0 +1,16 @@
+# Logs
+yarn-debug.log*
+yarn-error.log*
+
+# env
+.env
+
+# node_modules
+node_modules
+
+# build folders
+dist
+
+# system files
+.DS_Store
+.vercel
