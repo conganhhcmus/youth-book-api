@@ -1,4 +1,4 @@
 {
-    "words": ["youth-books", "youthbooks"],
-    "ignorePaths": ["*.log", "commitlint.config.ts"]
+    "words": ["youth-books", "youthbooks", "errmsg", "openapi"],
+    "ignorePaths": ["*.log", "commitlint.config.ts", "dist"]
 }

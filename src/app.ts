@@ -1,11 +1,15 @@
-import express, { Request, Response, ErrorRequestHandler } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import 'express-async-errors';
-import connect from './database/conn';
+import mongoose from 'mongoose';
+import swaggerUi from 'swagger-ui-express';
+import apiRouter from '@/routers';
+import errorHandler from '@/middlewares/errorHandler';
+import swaggerSpec from '@/swagger';
+import { PORT, ATLAS_URI } from '@/config';
 
-dotenv.config();
 const app = express();
 
 /** middlewares */
@@ -13,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'));
 app.disable('x-powered-by');
+app.use(cookieParser());
 
 /** HTTP GET Request */
 app.get('/', (req: Request, res: Response) => {
@@ -20,27 +25,19 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 /** api routes */
+app.use('/api/v1', apiRouter());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /** error handlers */
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-};
-app.use(errorHandler);
+errorHandler(app);
 
-const port = process.env.PORT || 8080;
+/** start server */
+app.listen(PORT, () => {
+    console.log(`Server connected to http://localhost:${PORT}`);
+});
 
-/** start server only when we have valid connection */
-connect()
-    .then(() => {
-        try {
-            app.listen(port, () => {
-                console.log(`Server connected to http://localhost:${port}`);
-            });
-        } catch (error) {
-            console.log('Cannot connect to the server');
-        }
-    })
-    .catch((error) => {
-        console.log('Invalid database connection...!');
-    });
+/** connect database */
+mongoose.Promise = Promise;
+mongoose.set('strictQuery', true);
+mongoose.connect(ATLAS_URI);
+mongoose.connection.on('error', (error: Error) => console.log(error));
