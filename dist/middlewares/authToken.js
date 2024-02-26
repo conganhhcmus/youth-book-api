@@ -47,7 +47,7 @@ const isAdminOrOwner = (req, res, next) => {
 };
 exports.isAdminOrOwner = isAdminOrOwner;
 const verifyAccessToken = (req, res, next) => {
-    const token = req.cookies[common_1.TOKEN_KEY];
+    const token = (req.cookies[common_1.TOKEN_KEY] || req.headers[common_1.TOKEN_KEY]);
     if (!token) {
         throw new error_2.ForbiddenError(error_1.INVALID_TOKEN);
     }
@@ -57,7 +57,7 @@ const verifyAccessToken = (req, res, next) => {
 };
 exports.verifyAccessToken = verifyAccessToken;
 const verifyRefreshToken = (req, res, next) => {
-    const refreshToken = req.cookies[common_1.REFRESH_TOKEN_KEY];
+    const refreshToken = (req.cookies[common_1.REFRESH_TOKEN_KEY] || req.headers[common_1.REFRESH_TOKEN_KEY]);
     if (!refreshToken) {
         throw new error_2.ForbiddenError(error_1.INVALID_TOKEN);
     }

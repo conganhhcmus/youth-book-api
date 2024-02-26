@@ -12,12 +12,12 @@ const swaggerDefinition: OAS3Definition = {
         securitySchemes: {
             accessToken: {
                 type: 'apiKey',
-                in: 'cookie',
+                in: 'header',
                 name: TOKEN_KEY,
             },
             refreshToken: {
                 type: 'apiKey',
-                in: 'cookie',
+                in: 'header',
                 name: REFRESH_TOKEN_KEY,
             },
         },

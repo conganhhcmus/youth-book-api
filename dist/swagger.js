@@ -16,12 +16,12 @@ const swaggerDefinition = {
         securitySchemes: {
             accessToken: {
                 type: 'apiKey',
-                in: 'cookie',
+                in: 'header',
                 name: common_1.TOKEN_KEY,
             },
             refreshToken: {
                 type: 'apiKey',
-                in: 'cookie',
+                in: 'header',
                 name: common_1.REFRESH_TOKEN_KEY,
             },
         },
