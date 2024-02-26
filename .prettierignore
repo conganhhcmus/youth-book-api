@@ -1,0 +1,7 @@
+dist/*
+*.lock
+*.json
+*.yml
+*.md
+.prettierrc
+commitlint.config.ts

@@ -8,9 +8,9 @@ yarn-error.log*
 # node_modules
 node_modules
 
-# build folders
-dist
-
 # system files
 .DS_Store
+
+# build folders
+# dist
 .vercel
