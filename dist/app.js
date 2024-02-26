@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 /** api routes */
 app.use('/api/v1', (0, routers_1.default)());
-app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
+app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default, { customCssUrl: config_1.SWAGGER_CSS_URL }));
 /** error handlers */
 (0, errorHandler_1.default)(app);
 /** start server */

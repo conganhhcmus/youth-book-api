@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import apiRouter from '@/routers';
 import errorHandler from '@/middlewares/errorHandler';
 import swaggerSpec from '@/swagger';
-import { PORT, ATLAS_URI } from '@/config';
+import { PORT, ATLAS_URI, SWAGGER_CSS_URL } from '@/config';
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.get('/', (req: Request, res: Response) => {
 
 /** api routes */
 app.use('/api/v1', apiRouter());
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { customCssUrl: SWAGGER_CSS_URL }));
 
 /** error handlers */
 errorHandler(app);

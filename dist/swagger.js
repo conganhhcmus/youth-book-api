@@ -30,7 +30,7 @@ const swaggerDefinition = {
 const options = {
     swaggerDefinition,
     // Paths to files containing OpenAPI definitions
-    apis: ['./src/routers/*.ts'],
+    apis: ['./src/routers/*.ts', './dist/routers/*.js'],
 };
 exports.default = (0, swagger_jsdoc_1.default)(options);
 //# sourceMappingURL=swagger.js.map

@@ -27,7 +27,7 @@ const swaggerDefinition: OAS3Definition = {
 const options = {
     swaggerDefinition,
     // Paths to files containing OpenAPI definitions
-    apis: ['./src/routers/*.ts'],
+    apis: ['./src/routers/*.ts', './dist/routers/*.js'],
 };
 
 export default swaggerJSDoc(options);
