@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { deleteUserById, getAllUserInfo, getUserInfo, updateUserInfo } from '@/controllers/users';
-import { isAdmin, isAdminOrOwner, verifyAccessToken } from '@/middlewares/authToken';
+import { verifyAccessToken } from '@/middlewares/authToken';
+import { isAdmin, isAdminOrOwner } from '@/middlewares/usersValidation';
 
 export default (router: Router) => {
     /**
