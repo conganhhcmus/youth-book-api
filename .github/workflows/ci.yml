@@ -71,6 +71,8 @@ jobs:
             with:
               name: build-folder
               path: ./dist
+              overwrite: true
+              retention-days: 7
 
     deploy:
         name: Deploy
