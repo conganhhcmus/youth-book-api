@@ -20,7 +20,7 @@ export const isAdminOrOwner = (req: Request, res: Response, next: NextFunction) 
     if (!userId) {
         throw new BadRequestError(INVALID_PARAMETERS);
     }
-    if (payload.role !== Roles.Admin || payload._id !== userId) {
+    if (payload.role !== Roles.Admin && payload._id !== userId) {
         throw new ForbiddenError(USER_HAVE_NOT_PERMISSION);
     }
     next();

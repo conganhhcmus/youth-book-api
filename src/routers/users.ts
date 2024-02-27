@@ -34,8 +34,8 @@ export default (router: Router) => {
      *         name: id   # Note the name is the same as in the path
      *         required: true
      *         schema:
-     *           type: integer
-     *           minimum: 1
+     *           type: string
+     *           example: 65db6debc7683009ffad79bc
      *
      *     responses:
      *       200:
@@ -58,8 +58,8 @@ export default (router: Router) => {
      *         name: id   # Note the name is the same as in the path
      *         required: true
      *         schema:
-     *           type: integer
-     *           minimum: 1
+     *           type: string
+     *           example: 65db6debc7683009ffad79bc
      *     requestBody:
      *      required: true
      *      description: Update user info
@@ -104,8 +104,8 @@ export default (router: Router) => {
      *         name: id   # Note the name is the same as in the path
      *         required: true
      *         schema:
-     *           type: integer
-     *           minimum: 1
+     *           type: string
+     *           example: 65db6debc7683009ffad79bc
      *
      *     responses:
      *       200:
