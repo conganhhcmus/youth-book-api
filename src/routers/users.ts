@@ -12,7 +12,13 @@ export default (router: Router) => {
      *     tags:
      *      - Users
      *     description: get all users
-     *
+     *     parameters:
+     *       - in: query
+     *         name: page   # Note the name is the same as in the path
+     *         schema:
+     *           type: number
+     *           example: 1
+     *           minimum: 1
      *     responses:
      *       200:
      *         description: Success
@@ -49,7 +55,7 @@ export default (router: Router) => {
      * @swagger
      *
      * /users/{id}:
-     *   post:
+     *   put:
      *     tags:
      *      - Users
      *     description: Update user info

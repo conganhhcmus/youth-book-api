@@ -1,7 +1,15 @@
+import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import UserModel from '@/models/users';
 import { User } from '@/types/users';
 
-export const getUsers = () => UserModel.find();
+export const getUsers = async (page: number) => {
+    const total = await UserModel.countDocuments().exec();
+    const users = await UserModel.find()
+        .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
+        .limit(DEFAULT_PAGE_SIZE);
+
+    return { users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE) };
+};
 
 export const getUserByUserName = (username: string) => UserModel.findOne({ username });
 

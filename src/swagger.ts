@@ -1,5 +1,5 @@
 import swaggerJSDoc, { OAS3Definition } from 'swagger-jsdoc';
-import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/auth';
 
 const swaggerDefinition: OAS3Definition = {
     openapi: '3.0.3',

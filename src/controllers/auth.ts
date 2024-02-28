@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as auth from '@/services/auth';
 import { User, UserJwtPayload } from '@/types/users';
-import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/auth';
 
 export const register = async (req: Request, res: Response) => {
     const data: User = req.body;

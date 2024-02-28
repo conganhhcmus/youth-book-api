@@ -1,4 +1,4 @@
-import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/auth';
 import { INVALID_TOKEN } from '@/constants/error';
 import * as helpers from '@/helpers/common';
 import { ForbiddenError } from '@/types/error';

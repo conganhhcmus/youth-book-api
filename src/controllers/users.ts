@@ -3,7 +3,8 @@ import { User } from '@/types/users';
 import { Request, Response } from 'express';
 
 export const getAllUserInfo = async (req: Request, res: Response) => {
-    const result = await getAllUsers();
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const result = await getAllUsers(page);
     return res.status(200).json(result);
 };
 
