@@ -21,7 +21,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const resetToken = async (req: Request, res: Response) => {
     const payload = req['identity'] as UserJwtPayload;
-    const refreshToken = req.cookies[REFRESH_TOKEN_KEY] as string;
+    const refreshToken = (req.cookies[REFRESH_TOKEN_KEY] || req.headers[REFRESH_TOKEN_KEY]) as string;
     const result = await auth.resetToken(payload, refreshToken);
     // res.cookie(TOKEN_KEY, result.token);
     // res.cookie(REFRESH_TOKEN_KEY, result.refreshToken);

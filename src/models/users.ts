@@ -5,9 +5,13 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: false, default: '' },
     fullName: { type: String, required: false, default: '' },
     role: { type: Number, required: false, default: 0 },
+    wallet: { type: Number, required: false, default: 0 },
+    avatarImg: { type: String, required: false },
     password: { type: String, required: true, select: false },
     refreshToken: { type: String, required: false, select: false },
     isActive: { type: Boolean, required: false, default: true },
+    createTime: { type: Date, required: true },
+    updateTime: { type: Date, required: false, default: new Date() },
 });
 
 export default mongoose.model('User', UserSchema);

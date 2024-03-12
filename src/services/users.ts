@@ -3,8 +3,8 @@ import { deleteUserById, getUserById, getUsers, updateUserById } from '@/reposit
 import { BadRequestError } from '@/types/error';
 import { User } from '@/types/users';
 
-export const getAllUsers = async (page: number) => {
-    return await getUsers(page);
+export const getAllUsers = async (page: number, q: string) => {
+    return await getUsers(page, q);
 };
 
 export const getUserInfoById = async (id: string) => {

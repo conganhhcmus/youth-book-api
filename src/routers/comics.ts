@@ -1,6 +1,8 @@
-import { recentUpdatedComics, recommendComics, topComics } from './../controllers/comics';
+import { addComic, genresComics, getComicInfo, recentUpdatedComics, recommendComics, topComics, updateComic } from './../controllers/comics';
 import { Router } from 'express';
 import { searchComics } from '@/controllers/comics';
+import { verifyAccessToken } from '@/middlewares/authToken';
+import { isAdmin } from '@/middlewares/usersValidation';
 
 export default (router: Router) => {
     /**
@@ -99,4 +101,12 @@ export default (router: Router) => {
      *
      */
     router.get('/comics/top', topComics);
+
+    router.post('/comics/add', verifyAccessToken, isAdmin, addComic);
+
+    router.put('/comics/:id', verifyAccessToken, isAdmin, updateComic);
+
+    router.get('/comics/genres', genresComics);
+
+    router.get('/comics/:id', getComicInfo);
 };

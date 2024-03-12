@@ -4,7 +4,8 @@ import { Request, Response } from 'express';
 
 export const getAllUserInfo = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
-    const result = await getAllUsers(page);
+    const q = (req.query.q as string) || '';
+    const result = await getAllUsers(page, q);
     return res.status(200).json(result);
 };
 

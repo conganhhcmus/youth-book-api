@@ -1,4 +1,14 @@
-import { getRecentUpdatedComics, getRecommendComics, getTopComics, searchComicByName } from '@/services/comics';
+import {
+    addNewComic,
+    getComicInfoById,
+    getGenresComics,
+    getRecentUpdatedComics,
+    getRecommendComics,
+    getTopComics,
+    searchComicByName,
+    updateComicInfoById,
+} from '@/services/comics';
+import { Comic, ComicResponse } from '@/types/comics';
 import { Request, Response } from 'express';
 
 export const searchComics = async (req: Request, res: Response) => {
@@ -28,5 +38,34 @@ export const topComics = async (req: Request, res: Response) => {
     const type = req.query.type as string;
 
     const result = getTopComics(type, page);
+    return res.json(result);
+};
+
+export const addComic = async (req: Request, res: Response) => {
+    const data = req.body as Comic;
+
+    const result = addNewComic(data);
+    return res.json(result);
+};
+
+export const updateComic = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = req.body as Comic;
+
+    const result = updateComicInfoById(id, data);
+    return res.json(result);
+};
+
+export const genresComics = async (req: Request, res: Response) => {
+    const result = await getGenresComics();
+
+    return res.json(result);
+};
+
+export const getComicInfo = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await getComicInfoById(id);
+
     return res.json(result);
 };

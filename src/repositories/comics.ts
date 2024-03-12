@@ -1,21 +1,17 @@
+import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import ComicsModel from '@/models/comics';
+import { Comic } from '@/types/comics';
 
-export const getComicsByRecentUpdate = (page: number) => {};
+export const getComics = async (page: number, q: string) => {
+    const query = !!q ? { name: { $regex: '.*' + q + '.*' } } : {};
+    const total = await ComicsModel.countDocuments().exec();
+    const comics = await ComicsModel.find(query)
+        .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
+        .limit(DEFAULT_PAGE_SIZE);
 
-export const getComicsByTrending = (page: number) => {};
+    return { data: comics, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+};
 
-export const getComicsByCompleted = (page: number) => {};
+export const createComic = (values: Record<string, any>): Promise<Comic> => new ComicsModel(values).save().then((comic) => comic.toObject());
 
-export const getComicsByTopViews = (page: number) => {};
-
-export const getComicsByTopDaily = (page: number) => {};
-
-export const getComicsByTopMonthly = (page: number) => {};
-
-export const getComicsByTopFollower = (page: number) => {};
-
-export const getComicsByTopGenres = (genres: number, page: number) => {};
-
-export const getComicsHistoryByUser = (userId: string, page: number) => {};
-
-export const getComicsByName = (query: string, page: number) => {};
+export const updateComicById = (id: string, values: Record<string, any>) => ComicsModel.findByIdAndUpdate(id, values, { new: true });

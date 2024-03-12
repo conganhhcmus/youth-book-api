@@ -2,13 +2,14 @@ import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import UserModel from '@/models/users';
 import { User } from '@/types/users';
 
-export const getUsers = async (page: number) => {
+export const getUsers = async (page: number, q: string) => {
+    const query = !!q ? { username: { $regex: '.*' + q + '.*' } } : {};
     const total = await UserModel.countDocuments().exec();
-    const users = await UserModel.find()
+    const users = await UserModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
 
-    return { users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE) };
+    return { data: users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
 export const getUserByUserName = (username: string) => UserModel.findOne({ username });

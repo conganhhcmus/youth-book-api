@@ -8,6 +8,10 @@ interface User {
     role: number;
     refreshToken: string;
     isActive: boolean;
+    wallet: number;
+    avatarImg: string;
+    updateTime: Date;
+    createTime: Date;
 }
 
 interface UserJwtPayload extends JwtPayload {
@@ -16,6 +20,8 @@ interface UserJwtPayload extends JwtPayload {
     email: string;
     fullName: string;
     role: number;
+    wallet: number;
+    avatarImg: string;
 }
 
 export { User, UserJwtPayload };

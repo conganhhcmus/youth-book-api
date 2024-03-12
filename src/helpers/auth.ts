@@ -17,7 +17,7 @@ export const createToken = (data: string | object) => {
 };
 
 export const createRefreshToken = (data: string | object) => {
-    return jwt.sign(data, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '1d' });
+    return jwt.sign(data, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '30d' });
 };
 
 export const verifyToken = (token: string) => {
