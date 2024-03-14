@@ -2,6 +2,8 @@ export interface ComicBaseResponse {
     _id: string;
     name: string;
     thumbnail: string;
+    recommend: boolean;
+    status: number;
     chapters: {
         _id: string;
         name: string;

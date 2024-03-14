@@ -50,7 +50,15 @@ export const updateComic = async (req: Request, res: Response) => {
 export const getComicInfo = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const result = await comicService.getComicInfoById(id);
+    const result = await comicService.getComicById(id);
+
+    return res.json(result);
+};
+
+export const deleteComic = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await comicService.deleteComicById(id);
 
     return res.json(result);
 };

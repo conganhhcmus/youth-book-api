@@ -17,6 +17,8 @@ export const getRecommendComics = (page: number): ComicBaseData => {
         result = result.concat({
             _id: index.toString(),
             name: `Test ${index}`,
+            status: 0,
+            recommend: true,
             thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
             chapters: [
                 {
@@ -55,6 +57,8 @@ export const getRecentUpdatedComics = (page: number): ComicData => {
             _id: index.toString(),
             name: `Test ${index}`,
             otherName: [],
+            status: 0,
+            recommend: true,
             description: `description ${index}`,
             thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
             chapters: [
@@ -101,6 +105,8 @@ export const getTopComics = (type: string, page: number): ComicData => {
             _id: index.toString(),
             name: `Test ${index}`,
             otherName: [],
+            recommend: false,
+            status: 0,
             description: `description ${index}`,
             thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
             chapters: [
@@ -151,8 +157,17 @@ export const updateComicById = async (id: string, comic: Comic) => {
     return result;
 };
 
-export const getComicInfoById = async (id: string) => {
+export const getComicById = async (id: string) => {
     const result = await comicRepository.getComicById(id);
+
+    return result;
+};
+
+export const deleteComicById = async (id: string) => {
+    // remove all chapter
+    await chapterRepository.deleteChapterByComicId(id);
+
+    const result = await comicRepository.deleteComicById(id);
 
     return result;
 };

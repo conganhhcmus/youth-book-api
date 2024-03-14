@@ -9,6 +9,7 @@ const ComicSchema = new mongoose.Schema({
     follower: { type: Number, required: false, default: 0 },
     genres: { type: [Types.ObjectId], required: true },
     status: { type: Number, required: false, default: 0 },
+    recommend: { type: Boolean, required: false, default: false },
     totalViews: { type: Number, required: false, default: 0 },
     author: { type: String, required: false, default: 0 },
     createTime: { type: Date, required: true },
