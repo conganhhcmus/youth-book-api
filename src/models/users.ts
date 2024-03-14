@@ -1,3 +1,4 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -11,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     refreshToken: { type: String, required: false, select: false },
     isActive: { type: Boolean, required: false, default: true },
     createTime: { type: Date, required: true },
-    updateTime: { type: Date, required: false, default: new Date() },
+    updateTime: { type: Date, required: false, default: moment().utc().toDate() },
 });
 
 export default mongoose.model('User', UserSchema);

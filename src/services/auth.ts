@@ -3,6 +3,7 @@ import { BadRequestError, UnauthorizedError } from '@/types/error';
 import { createUser, getUserByUserName } from '@/repositories/users';
 import { comparePassword, createRefreshToken, createToken, hashPassword } from '@/helpers/auth';
 import { INVALID_LOGIN, INVALID_PARAMETERS, INVALID_PASSWORD, INVALID_REFRESH_TOKEN, USER_IS_EXISTING, USER_NOT_FOUND } from '@/constants/error';
+import moment from 'moment';
 
 export const register = async (data: User): Promise<User> => {
     if (!data.password || !data.username) {
@@ -20,7 +21,7 @@ export const register = async (data: User): Promise<User> => {
         fullName: data.fullName,
         role: data.role,
         password: await hashPassword(data.password),
-        createTime: new Date(),
+        createTime: moment().utc().toDate(),
     });
 
     return user;

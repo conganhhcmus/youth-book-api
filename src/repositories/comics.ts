@@ -1,7 +1,7 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import ComicsModel from '@/models/comics';
-import mongoose from 'mongoose';
-const ObjectId = mongoose.Types.ObjectId;
+import { Types } from 'mongoose';
+
 import { Comic } from '@/types/comics';
 
 export const getComics = async (page: number, q: string) => {
@@ -10,15 +10,22 @@ export const getComics = async (page: number, q: string) => {
     const comics = await ComicsModel.aggregate([
         {
             $lookup: {
-                from: 'Chapter',
+                from: 'chapters',
                 localField: '_id',
                 foreignField: 'comicId',
+                pipeline: [
+                    {
+                        $sort: {
+                            createTime: -1,
+                        },
+                    },
+                ],
                 as: 'chapters',
             },
         },
         {
             $lookup: {
-                from: 'Genres',
+                from: 'genres',
                 localField: 'genres',
                 foreignField: '_id',
                 as: 'genres',
@@ -33,11 +40,11 @@ export const getComics = async (page: number, q: string) => {
 };
 
 export const getComicById = async (id: string) => {
-    const query = { _id: new ObjectId(id) };
+    const query = { _id: new Types.ObjectId(id) };
     const comics = await ComicsModel.aggregate([
         {
             $lookup: {
-                from: 'Chapter',
+                from: 'chapter',
                 localField: '_id',
                 foreignField: 'comicId',
                 as: 'chapters',
@@ -45,7 +52,7 @@ export const getComicById = async (id: string) => {
         },
         {
             $lookup: {
-                from: 'Genres',
+                from: 'genres',
                 localField: 'genres',
                 foreignField: '_id',
                 as: 'genres',

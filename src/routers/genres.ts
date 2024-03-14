@@ -4,8 +4,6 @@ import { verifyAccessToken } from '@/middlewares/authToken';
 import { isAdmin } from '@/middlewares/usersValidation';
 
 export default (router: Router) => {
-    router.get('/genres', getAllGenres);
-
     router.get('/genres/:id', getGenresById);
 
     router.post('/genres/add', verifyAccessToken, isAdmin, addGenres);
@@ -13,4 +11,6 @@ export default (router: Router) => {
     router.put('/genres/:id', verifyAccessToken, isAdmin, updateGenres);
 
     router.delete('/genres/:id', verifyAccessToken, isAdmin, deleteGenres);
+
+    router.get('/genres', getAllGenres);
 };

@@ -3,6 +3,7 @@ export interface Chapter {
     name: string;
     type: number;
     content: string;
+    price: number;
     updateTime: Date;
     createTime: Date;
 }
@@ -13,6 +14,7 @@ export interface ChapterResponse {
     name: string;
     type: number;
     content: string;
+    price: number;
     updateTime: Date;
     createTime: Date;
 }
