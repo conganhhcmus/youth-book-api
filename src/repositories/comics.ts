@@ -1,5 +1,7 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import ComicsModel from '@/models/comics';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 import { Comic } from '@/types/comics';
 
 export const getComics = async (page: number, q: string) => {
@@ -28,6 +30,31 @@ export const getComics = async (page: number, q: string) => {
     ]);
 
     return { data: comics, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+};
+
+export const getComicById = async (id: string) => {
+    const query = { _id: new ObjectId(id) };
+    const comics = await ComicsModel.aggregate([
+        {
+            $lookup: {
+                from: 'Chapter',
+                localField: '_id',
+                foreignField: 'comicId',
+                as: 'chapters',
+            },
+        },
+        {
+            $lookup: {
+                from: 'Genres',
+                localField: 'genres',
+                foreignField: '_id',
+                as: 'genres',
+            },
+        },
+        { $match: query },
+    ]);
+
+    return comics[0] || undefined;
 };
 
 export const createComic = (values: Record<string, any>): Promise<Comic> => new ComicsModel(values).save().then((comic) => comic.toObject());

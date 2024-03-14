@@ -151,45 +151,8 @@ export const updateComicById = async (id: string, comic: Comic) => {
     return result;
 };
 
-export const getComicInfoById = async (id: string): Promise<ComicResponse> => {
-    const index = 1;
-    return {
-        _id: index.toString(),
-        name: `Test ${index}`,
-        otherName: [],
-        description: `description ${index}`,
-        thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
-        chapters: [
-            {
-                _id: `1-${index}`,
-                name: 'Chapter 1',
-                updateTime: new Date(),
-                createTime: new Date(),
-            },
-            {
-                _id: `2-${index}`,
-                name: 'Chapter 2',
-                updateTime: new Date(),
-                createTime: new Date(),
-            },
-            {
-                _id: `3-${index}`,
-                name: 'Chapter 3',
-                updateTime: new Date('01/01/2024'),
-                createTime: new Date(),
-            },
-        ],
-        genres: [
-            {
-                _id: '1',
-                name: 'Genres 1',
-            },
-            {
-                _id: '2',
-                name: 'Genres 1',
-            },
-        ],
-        author: `Kai test ${index}`,
-        totalViews: 1000,
-    };
+export const getComicInfoById = async (id: string) => {
+    const result = await comicRepository.getComicById(id);
+
+    return result;
 };
