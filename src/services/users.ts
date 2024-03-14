@@ -1,23 +1,23 @@
 import { INVALID_PARAMETERS, USER_NOT_FOUND } from '@/constants/error';
-import { deleteUserById, getUserById, getUsers, updateUserById } from '@/repositories/users';
+import * as userRepository from '@/repositories/users';
 import { BadRequestError } from '@/types/error';
 import { User } from '@/types/users';
 
 export const getAllUsers = async (page: number, q: string) => {
-    return await getUsers(page, q);
+    return await userRepository.getUsers(page, q);
 };
 
-export const getUserInfoById = async (id: string) => {
-    const user = await getUserById(id);
+export const getUserById = async (id: string) => {
+    const user = await userRepository.getUserById(id);
     if (!user) {
         throw new BadRequestError(USER_NOT_FOUND);
     }
     return user;
 };
 
-export const updateUserInfoById = async (id: string, data: User) => {
+export const updateUserById = async (id: string, data: User) => {
     const { password, refreshToken, username, ...newData } = data;
-    const user = await getUserById(id);
+    const user = await userRepository.getUserById(id);
     if (!user) {
         throw new BadRequestError(USER_NOT_FOUND);
     }
@@ -25,14 +25,14 @@ export const updateUserInfoById = async (id: string, data: User) => {
         throw new BadRequestError(INVALID_PARAMETERS);
     }
 
-    return await updateUserById(id, newData);
+    return await userRepository.updateUserById(id, newData);
 };
 
-export const deleteUserInfoById = async (id: string) => {
+export const deleteUserById = async (id: string) => {
     const user = await getUserById(id);
     if (!user) {
         throw new BadRequestError(USER_NOT_FOUND);
     }
 
-    return await deleteUserById(id);
+    return await userRepository.deleteUserById(id);
 };

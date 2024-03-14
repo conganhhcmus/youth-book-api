@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { deleteUserById, getAllUserInfo, getUserInfo, updateUserInfo } from '@/controllers/users';
+import { deleteUserById, getAllUser, getUserById, updateUserById } from '@/controllers/users';
 import { verifyAccessToken } from '@/middlewares/authToken';
 import { isAdmin, isAdminOrOwner } from '@/middlewares/usersValidation';
 
@@ -25,7 +25,7 @@ export default (router: Router) => {
      *     security:
      *       - accessToken: []
      */
-    router.get('/users', verifyAccessToken, isAdmin, getAllUserInfo);
+    router.get('/users', verifyAccessToken, isAdmin, getAllUser);
 
     /**
      * @swagger
@@ -49,7 +49,7 @@ export default (router: Router) => {
      *     security:
      *       - accessToken: []
      */
-    router.get('/users/:id', verifyAccessToken, isAdminOrOwner, getUserInfo);
+    router.get('/users/:id', verifyAccessToken, isAdminOrOwner, getUserById);
 
     /**
      * @swagger
@@ -95,7 +95,7 @@ export default (router: Router) => {
      *     security:
      *       - accessToken: []
      */
-    router.put('/users/:id', verifyAccessToken, isAdminOrOwner, updateUserInfo);
+    router.put('/users/:id', verifyAccessToken, isAdminOrOwner, updateUserById);
 
     /**
      * @swagger

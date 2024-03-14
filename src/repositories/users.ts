@@ -3,7 +3,7 @@ import UserModel from '@/models/users';
 import { User } from '@/types/users';
 
 export const getUsers = async (page: number, q: string) => {
-    const query = !!q ? { username: { $regex: '.*' + q + '.*' } } : {};
+    const query = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await UserModel.countDocuments().exec();
     const users = await UserModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)

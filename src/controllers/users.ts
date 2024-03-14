@@ -1,29 +1,29 @@
-import { deleteUserInfoById, getAllUsers, getUserInfoById, updateUserInfoById } from '@/services/users';
+import * as userService from '@/services/users';
 import { User } from '@/types/users';
 import { Request, Response } from 'express';
 
-export const getAllUserInfo = async (req: Request, res: Response) => {
+export const getAllUser = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const q = (req.query.q as string) || '';
-    const result = await getAllUsers(page, q);
+    const result = await userService.getAllUsers(page, q);
     return res.status(200).json(result);
 };
 
-export const getUserInfo = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const result = await getUserInfoById(id);
+    const result = await userService.getUserById(id);
     return res.status(200).json(result);
 };
 
-export const updateUserInfo = async (req: Request, res: Response) => {
+export const updateUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const data: User = req.body;
-    const result = await updateUserInfoById(id, data);
+    const result = await userService.updateUserById(id, data);
     return res.status(200).json(result);
 };
 
 export const deleteUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const result = await deleteUserInfoById(id);
+    const result = await userService.deleteUserById(id);
     return res.status(200).json(result);
 };

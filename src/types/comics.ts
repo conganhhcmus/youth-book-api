@@ -1,11 +1,12 @@
 export interface ComicBaseResponse {
     _id: string;
-    title: string;
+    name: string;
     thumbnail: string;
     chapters: {
-        id: string;
+        _id: string;
         name: string;
-        updatedAt: Date;
+        updateTime: Date;
+        createTime: Date;
     }[];
     genres: {
         _id: string;
@@ -18,11 +19,6 @@ export interface ComicResponse extends ComicBaseResponse {
     otherName: string[];
     description: string;
     totalViews: number;
-}
-
-export interface GenresResponse {
-    _id: string;
-    name: string;
 }
 
 export interface ComicData {

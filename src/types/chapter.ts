@@ -4,6 +4,7 @@ export interface Chapter {
     type: number;
     content: string;
     updateTime: Date;
+    createTime: Date;
 }
 
 export interface ChapterResponse {
@@ -13,4 +14,5 @@ export interface ChapterResponse {
     type: number;
     content: string;
     updateTime: Date;
+    createTime: Date;
 }

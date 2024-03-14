@@ -2,6 +2,8 @@ import { Router } from 'express';
 import users from './users';
 import auth from './auth';
 import comics from './comics';
+import chapter from './chapter';
+import genres from './genres';
 const router = Router();
 
 export default (): Router => {
@@ -9,6 +11,8 @@ export default (): Router => {
     auth(router);
     users(router);
     comics(router);
+    chapter(router);
+    genres(router);
 
     return router;
 };

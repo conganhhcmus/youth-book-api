@@ -5,3 +5,7 @@ export const createChapter = (values: Record<string, any>): Promise<ChapterRespo
     new ChapterModel(values).save().then((chapter) => chapter.toObject());
 
 export const updateChapterById = (id: string, values: Record<string, any>) => ChapterModel.findByIdAndUpdate(id, values, { new: true });
+
+export const deleteChapterByComicId = (comicId: string) => ChapterModel.deleteMany({ comicId: comicId });
+
+export const deleteChapterById = (id: string) => ChapterModel.findByIdAndDelete(id);
