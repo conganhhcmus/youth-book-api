@@ -13,7 +13,7 @@ export interface GenresResponse {
 }
 
 export interface GenresData {
-    data: Genres[];
+    data: GenresResponse[];
     currentPage: number;
     totalPage: number;
 }

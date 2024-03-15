@@ -36,3 +36,7 @@ export const deleteUserById = async (id: string) => {
 
     return await userRepository.deleteUserById(id);
 };
+
+export const updateWalletById = async (id: string, amount: number) => {
+    return await userRepository.updateWalletById(id, amount);
+};

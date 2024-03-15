@@ -17,11 +17,11 @@ export const getAllChapterByComicId = async (page: number, q: string, comicId: s
         ? { name: { $regex: '.*' + q + '.*', $options: 'i' }, comicId: new Types.ObjectId(comicId) }
         : { comicId: new Types.ObjectId(comicId) };
     const total = await ChapterModel.countDocuments().exec();
-    const users = await ChapterModel.find(query)
+    const chapter = await ChapterModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
 
-    return { data: users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: chapter, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
 export const getChapterById = (id: string) => ChapterModel.findById(id);

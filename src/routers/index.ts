@@ -4,6 +4,7 @@ import auth from './auth';
 import comics from './comics';
 import chapter from './chapter';
 import genres from './genres';
+import payment from './payment';
 const router = Router();
 
 export default (): Router => {
@@ -13,6 +14,7 @@ export default (): Router => {
     comics(router);
     chapter(router);
     genres(router);
+    payment(router);
 
     return router;
 };

@@ -1,6 +1,7 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import UserModel from '@/models/users';
 import { User } from '@/types/users';
+import { Types } from 'mongoose';
 
 export const getUsers = async (page: number, q: string) => {
     const query = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
@@ -23,3 +24,6 @@ export const createUser = (values: Record<string, any>): Promise<User> => new Us
 export const deleteUserById = (id: string) => UserModel.findByIdAndDelete(id);
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values, { new: true });
+
+export const updateWalletById = (id: string, amount: number) =>
+    UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: { wallet: amount } }, { new: true });
