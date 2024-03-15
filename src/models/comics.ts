@@ -6,7 +6,7 @@ const ComicSchema = new mongoose.Schema({
     description: { type: String, required: false, default: '' },
     thumbnail: { type: String, required: true },
     otherName: { type: [String], required: false, default: [] },
-    follower: { type: Number, required: false, default: 0 },
+    totalFollowers: { type: Number, required: false, default: 0 },
     genres: { type: [Types.ObjectId], required: true },
     status: { type: Number, required: false, default: 0 },
     recommend: { type: Boolean, required: false, default: false },

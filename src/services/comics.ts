@@ -11,91 +11,14 @@ export const searchComic = async (page: number, q: string) => {
     return { totalPage: result.totalPage, currentPage: result.currentPage, data: data };
 };
 
-export const getRecommendComics = (page: number): ComicBaseData => {
-    let result: ComicBaseResponse[] = [];
-    for (let index = 0; index < DEFAULT_PAGE_SIZE; index++) {
-        result = result.concat({
-            _id: index.toString(),
-            name: `Test ${index}`,
-            status: 0,
-            recommend: true,
-            thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
-            chapters: [
-                {
-                    _id: '1',
-                    name: 'Chap 1',
-                    createTime: new Date(),
-                    updateTime: new Date(),
-                },
-                {
-                    _id: '2',
-                    name: 'Chap 2',
-                    createTime: new Date(),
-                    updateTime: new Date(),
-                },
-            ],
-            genres: [
-                {
-                    _id: '1',
-                    name: 'Genres 1',
-                },
-                {
-                    _id: '2',
-                    name: 'Genres 2',
-                },
-            ],
-            author: `Kai test ${index}`,
-        });
-    }
-    return { totalPage: 100, currentPage: page, data: result };
+export const getRecommendComics = async (page: number) => {
+    const result = await comicRepository.getRecommendComics(page);
+    return result;
 };
 
-export const getRecentUpdatedComics = (page: number): ComicData => {
-    let result: ComicResponse[] = [];
-    for (let index = 0; index < DEFAULT_PAGE_SIZE; index++) {
-        result = result.concat({
-            _id: index.toString(),
-            name: `Test ${index}`,
-            otherName: [],
-            status: 0,
-            recommend: true,
-            description: `description ${index}`,
-            thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
-            chapters: [
-                {
-                    _id: `1-${index}`,
-                    name: 'Chapter 1',
-                    createTime: new Date(),
-                    updateTime: new Date(),
-                },
-                {
-                    _id: `2-${index}`,
-                    name: 'Chapter 2',
-                    createTime: new Date(),
-                    updateTime: new Date(),
-                },
-                {
-                    _id: `3-${index}`,
-                    name: 'Chapter 3',
-                    createTime: new Date(),
-                    updateTime: new Date('01/01/2024'),
-                },
-            ],
-            genres: [
-                {
-                    _id: '1',
-                    name: 'Genres 1',
-                },
-                {
-                    _id: '2',
-                    name: 'Genres 1',
-                },
-            ],
-            author: `Kai test ${index}`,
-            totalViews: 100,
-        });
-    }
-    return { totalPage: 100, currentPage: page, data: result };
+export const getRecentUpdatedComics = async (page: number) => {
+    const result = await comicRepository.getRecentUpdatedComics(page);
+    return result;
 };
 
 export const getTopComics = (type: string, page: number): ComicData => {
@@ -107,23 +30,27 @@ export const getTopComics = (type: string, page: number): ComicData => {
             otherName: [],
             recommend: false,
             status: 0,
+            totalFollowers: 0,
             description: `description ${index}`,
             thumbnail: `https://source.unsplash.com/random/300x200?sig=${index}`,
             chapters: [
                 {
                     _id: `1-${index}`,
                     name: 'Chapter 1',
+                    shortName: 'Chapter 1',
                     updateTime: new Date(),
                     createTime: new Date(),
                 },
                 {
                     _id: `2-${index}`,
                     name: 'Chapter 2',
+                    shortName: 'Chapter 2',
                     createTime: new Date(),
                     updateTime: new Date(),
                 },
                 {
                     _id: `3-${index}`,
+                    shortName: 'Chapter 3',
                     createTime: new Date(),
                     name: 'Chapter 3',
                     updateTime: new Date('01/01/2024'),

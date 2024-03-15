@@ -1,6 +1,7 @@
 export interface Chapter {
     comicId: string;
     name: string;
+    shortName: string;
     type: number;
     content: string;
     price: number;
@@ -12,6 +13,7 @@ export interface ChapterResponse {
     _id: string;
     comicId: string;
     name: string;
+    shortName: string;
     type: number;
     content: string;
     price: number;

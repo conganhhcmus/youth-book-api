@@ -3,10 +3,13 @@ export interface ComicBaseResponse {
     name: string;
     thumbnail: string;
     recommend: boolean;
+    totalFollowers: number;
+    totalViews: number;
     status: number;
     chapters: {
         _id: string;
         name: string;
+        shortName: string;
         updateTime: Date;
         createTime: Date;
     }[];
@@ -40,9 +43,9 @@ export interface Comic {
     description: string;
     thumbnail: string;
     otherName: string[];
-    follower: number;
     genres: string[];
     status: number;
+    totalFollowers: number;
     totalViews: number;
     author: string;
     createTime: Date;
