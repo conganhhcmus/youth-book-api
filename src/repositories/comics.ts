@@ -42,6 +42,11 @@ export const getComics = async (page: number, q: string) => {
     return getComicByPageAndQuery(page, query, DEFAULT_PAGE_SIZE);
 };
 
+export const getComicsByGenres = async (type: string, page: number) => {
+    const query = type == 'all' ? {} : { 'genres._id': new Types.ObjectId(type) };
+    return getComicByPageAndQuery(page, query);
+};
+
 export const getRecommendComics = async (page: number) => {
     const query = { recommend: true };
     return getComicByPageAndQuery(page, query);

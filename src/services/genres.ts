@@ -7,6 +7,12 @@ export const getAllGenres = async (page: number, q: string) => {
     return result;
 };
 
+export const getFullGenres = async () => {
+    const result = await genresRepository.getFullGenres();
+
+    return result;
+};
+
 export const getGenresById = async (id: string) => {
     const result = await genresRepository.getGenresById(id);
 

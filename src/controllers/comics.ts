@@ -32,6 +32,14 @@ export const topComics = async (req: Request, res: Response) => {
     return res.json(result);
 };
 
+export const getComicsByGenres = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const type = req.query.type as string;
+
+    const result = await comicService.getComicsByGenres(type, page);
+    return res.json(result);
+};
+
 export const addComic = async (req: Request, res: Response) => {
     const data = req.body as Comic;
 

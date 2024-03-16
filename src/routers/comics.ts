@@ -1,4 +1,13 @@
-import { addComic, deleteComic, getComicInfo, recentUpdatedComics, recommendComics, topComics, updateComic } from './../controllers/comics';
+import {
+    addComic,
+    deleteComic,
+    getComicInfo,
+    getComicsByGenres,
+    recentUpdatedComics,
+    recommendComics,
+    topComics,
+    updateComic,
+} from './../controllers/comics';
 import { Router } from 'express';
 import { searchComics } from '@/controllers/comics';
 import { verifyAccessToken } from '@/middlewares/authToken';
@@ -101,6 +110,8 @@ export default (router: Router) => {
      *
      */
     router.get('/comics/top', topComics);
+
+    router.get('/comics/genres', getComicsByGenres);
 
     router.post('/comics/add', verifyAccessToken, isAdmin, addComic);
 

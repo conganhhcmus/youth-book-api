@@ -10,6 +10,11 @@ export const getAllGenres = async (req: Request, res: Response) => {
     return res.status(200).json(result);
 };
 
+export const getFullGenres = async (req: Request, res: Response) => {
+    const result = await genresService.getFullGenres();
+    return res.status(200).json(result);
+};
+
 export const getGenresById = async (req: Request, res: Response) => {
     const { id } = req.params;
 

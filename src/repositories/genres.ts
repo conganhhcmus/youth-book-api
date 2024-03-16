@@ -5,11 +5,17 @@ import { GenresResponse } from '@/types/genres';
 export const getAllGenres = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await GenresModel.countDocuments().exec();
-    const users = await GenresModel.find(query)
+    const genres = await GenresModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
 
-    return { data: users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: genres, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+};
+
+export const getFullGenres = async () => {
+    const genres = await GenresModel.find({});
+
+    return genres;
 };
 
 export const createGenres = (values: Record<string, any>): Promise<GenresResponse> =>
