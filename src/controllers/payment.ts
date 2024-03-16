@@ -18,16 +18,39 @@ export const depositAccount = async (req: Request, res: Response) => {
     return res.status(200).json(result);
 };
 
+export const buyChapter = async (req: Request, res: Response) => {
+    const amount = parseInt(req.body.amount, 10) || 0;
+    const chapterId = (req.body.chapterId as string) || '';
+    const payload = req['identity'] as UserJwtPayload;
+
+    if (amount === 0 || chapterId === '') {
+        throw new BadRequestError(INVALID_PARAMETERS);
+    }
+
+    const result = await paymentService.buyChapter(amount, payload._id, chapterId);
+
+    return res.status(200).json(result);
+};
+
 export const getAllTransactionByUserId = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id: userId } = req.params;
     const page = parseInt(req.query.page as string, 10) || 1;
     const option = parseInt(req.query.option as string, 10) || 0;
     const status = (req.query.status as string[]).map((x) => parseInt(x, 10) || 0);
 
-    const result = await paymentService.getAllTransactionByUserId(id, option, status, page);
+    const result = await paymentService.getAllTransactionByUserId(userId, option, status, page);
 
     return res.status(200).json(result);
 };
+
+export const getAllBuyTransactionByUserId = async (req: Request, res: Response) => {
+    const { id: userId } = req.params;
+
+    const result = await paymentService.getAllBuyTransactionByUserId(userId);
+
+    return res.status(200).json(result);
+};
+
 export const getAllTransaction = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const option = parseInt(req.query.option as string, 10) || 0;

@@ -1,9 +1,9 @@
-import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
+import { DEFAULT_COMIC_PAGE_SIZE, DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import ComicsModel from '@/models/comics';
 import { Types } from 'mongoose';
 import { Comic } from '@/types/comics';
 
-const getComicByPageAndQuery = async (page: number, query: {}) => {
+const getComicByPageAndQuery = async (page: number, query: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
     const total = await ComicsModel.countDocuments().exec();
     const comics = await ComicsModel.aggregate([
         {
@@ -29,17 +29,17 @@ const getComicByPageAndQuery = async (page: number, query: {}) => {
                 as: 'genres',
             },
         },
-        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
-        { $limit: DEFAULT_PAGE_SIZE },
+        { $skip: pageSize * page - pageSize },
+        { $limit: pageSize },
         { $match: query },
     ]);
 
-    return { data: comics, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: comics, totalPage: Math.ceil(total / pageSize), currentPage: page };
 };
 
 export const getComics = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
-    return getComicByPageAndQuery(page, query);
+    return getComicByPageAndQuery(page, query, DEFAULT_PAGE_SIZE);
 };
 
 export const getRecommendComics = async (page: number) => {

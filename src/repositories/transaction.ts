@@ -1,4 +1,5 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
+import { TransactionStatus, TransactionType } from '@/constants/payment';
 import TransactionModel from '@/models/transaction';
 import { TransactionResponse } from '@/types/transaction';
 import moment from 'moment';
@@ -40,6 +41,18 @@ export const getAllTransactionByUserId = async (userId: string, option: number, 
         .limit(DEFAULT_PAGE_SIZE);
 
     return { data: transaction, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+};
+
+export const getAllBuyTransactionByUserId = async (userId: string) => {
+    const query = {
+        type: TransactionType.buy,
+        status: { $in: TransactionStatus.success },
+        targetId: new Types.ObjectId(userId),
+    };
+    const total = await TransactionModel.countDocuments().exec();
+    const transaction = await TransactionModel.find(query);
+
+    return transaction;
 };
 
 export const updateTransactionById = (id: string, status: number) =>
