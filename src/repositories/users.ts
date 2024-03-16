@@ -26,4 +26,4 @@ export const deleteUserById = (id: string) => UserModel.findByIdAndDelete(id);
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values, { new: true });
 
 export const updateWalletById = (id: string, amount: number) =>
-    UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: { wallet: amount } }, { new: true });
+    UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $inc: { wallet: amount } }, { new: true });

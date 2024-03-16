@@ -37,3 +37,11 @@ export const resetPassword = async (req: Request, res: Response) => {
     // res.cookie(REFRESH_TOKEN_KEY, result.refreshToken);
     return res.status(200).json(result);
 };
+
+export const fetchInfo = async (req: Request, res: Response) => {
+    const payload = req['identity'] as UserJwtPayload;
+    const result = await auth.fetchInfo(payload);
+    // res.cookie(TOKEN_KEY, result.token);
+    // res.cookie(REFRESH_TOKEN_KEY, result.refreshToken);
+    return res.status(200).json(result.token);
+};

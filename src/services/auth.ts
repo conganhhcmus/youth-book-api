@@ -88,3 +88,17 @@ export const resetPassword = async (data: User, newPassword: string): Promise<{ 
 
     return { token, refreshToken };
 };
+
+export const fetchInfo = async (payload: UserJwtPayload): Promise<{ token: string; refreshToken: string }> => {
+    const user = await getUserByUserName(payload.username);
+    let token = '';
+    const refreshToken = '';
+    if (!user) {
+        throw new BadRequestError(USER_NOT_FOUND);
+    }
+    if (payload.wallet !== user.wallet) {
+        const { password, ...payloadNew } = user.toObject();
+        token = createToken(payloadNew);
+    }
+    return { token, refreshToken };
+};

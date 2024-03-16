@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login, register, resetPassword, resetToken } from '@/controllers/auth';
+import { fetchInfo, login, register, resetPassword, resetToken } from '@/controllers/auth';
 import { verifyAccessToken, verifyRefreshToken } from '@/middlewares/authToken';
 import { isAdminOrOwner } from '@/middlewares/usersValidation';
 
@@ -139,4 +139,6 @@ export default (router: Router) => {
      *       - accessToken: []
      */
     router.post('/reset-password/:id', verifyAccessToken, isAdminOrOwner, resetPassword);
+
+    router.get('/fetch-info', verifyAccessToken, fetchInfo);
 };
