@@ -36,7 +36,7 @@ export const getAllTransactionByUserId = async (req: Request, res: Response) => 
     const { id: userId } = req.params;
     const page = parseInt(req.query.page as string, 10) || 1;
     const option = parseInt(req.query.option as string, 10) || 0;
-    const status = (req.query.status as string[]).map((x) => parseInt(x, 10) || 0);
+    const status = req.query.status ? (req.query.status as string[]).map((x) => parseInt(x, 10) || 0) : [];
 
     const result = await paymentService.getAllTransactionByUserId(userId, option, status, page);
 
@@ -54,7 +54,7 @@ export const getAllBuyTransactionByUserId = async (req: Request, res: Response) 
 export const getAllTransaction = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const option = parseInt(req.query.option as string, 10) || 0;
-    const status = (req.query.status as string[]).map((x) => parseInt(x, 10) || 0);
+    const status = req.query.status ? (req.query.status as string[]).map((x) => parseInt(x, 10) || 0) : [];
     const q = (req.query.q as string) || '';
 
     const result = await paymentService.getAllTransaction(option, status, page, q);

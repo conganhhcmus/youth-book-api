@@ -1,8 +1,7 @@
-import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import { getComicResponse } from '@/helpers/comic';
 import * as comicRepository from '@/repositories/comics';
 import * as chapterRepository from '@/repositories/chapters';
-import { ComicResponse, ComicBaseResponse, ComicBaseData, ComicData, Comic } from '@/types/comics';
+import { ComicResponse, Comic } from '@/types/comics';
 
 export const searchComic = async (page: number, q: string) => {
     const result = await comicRepository.getComics(page, q);

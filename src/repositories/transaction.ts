@@ -74,3 +74,19 @@ export const updateTransactionById = (id: string, updateById: string, status: nu
         { $set: { status: status, updateBy: new Types.ObjectId(updateById) } },
         { new: true },
     );
+
+export const getTotalAmountByDays = async (days: number) => {
+    const date = moment().utc().subtract(days, 'days').toDate();
+    const query =
+        days == 0
+            ? { status: TransactionStatus.success, type: TransactionType.deposit }
+            : {
+                  status: TransactionStatus.success,
+                  type: TransactionType.deposit,
+                  updateTime: { $gt: date },
+              };
+
+    const transaction = await TransactionModel.aggregate([{ $match: query }]);
+
+    return transaction.reduce((currentValue, transaction) => currentValue + (parseInt(transaction.amount) || 0), 0);
+};

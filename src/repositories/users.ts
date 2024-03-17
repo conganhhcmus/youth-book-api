@@ -27,3 +27,5 @@ export const updateUserById = (id: string, values: Record<string, any>) => UserM
 
 export const updateWalletById = (id: string, amount: number) =>
     UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $inc: { wallet: amount } }, { new: true });
+
+export const getTotalUsers = async () => await UserModel.countDocuments().exec();

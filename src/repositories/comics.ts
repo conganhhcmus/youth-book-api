@@ -114,3 +114,11 @@ export const deleteComicById = (id: string) => ComicsModel.findByIdAndDelete(id)
 
 export const updateTotalViewsById = (id: string) =>
     ComicsModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $inc: { totalViews: 1 } }, { new: true });
+
+export const getTotalComics = async () => await ComicsModel.countDocuments().exec();
+
+export const getTotalViews = async () => {
+    const comics = await ComicsModel.aggregate([{ $match: {} }]);
+
+    return comics.reduce((currentValue, comic) => currentValue + (parseInt(comic.totalViews) || 0), 0);
+};
