@@ -16,8 +16,8 @@ export const getRecommendComics = async (page: number) => {
     return result;
 };
 
-export const getRecentUpdatedComics = async (page: number) => {
-    const result = await comicRepository.getRecentUpdatedComics(page);
+export const getRecentUpdatedComics = async (page: number, status: string) => {
+    const result = await comicRepository.getRecentUpdatedComics(page, status);
     return result;
 };
 
@@ -28,8 +28,8 @@ export const getComicsByGenres = async (type: string, page: number) => {
     return { totalPage: result.totalPage, currentPage: result.currentPage, data: data };
 };
 
-export const getTopComics = async (type: string, page: number) => {
-    const result = await comicRepository.getRecentUpdatedComics(page);
+export const getTopComics = async (type: string, page: number, status: string) => {
+    const result = await comicRepository.getTopComics(type, page, status);
     return result;
 };
 
@@ -48,6 +48,7 @@ export const getComicById = async (id: string) => {
     const result = await comicRepository.getComicById(id);
 
     // update views
+    await comicRepository.updateTotalViewsById(id);
 
     return result;
 };

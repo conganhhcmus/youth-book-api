@@ -19,16 +19,18 @@ export const recommendComics = async (req: Request, res: Response) => {
 
 export const recentUpdatedComics = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
+    const status = req.query.status as string;
 
-    const result = await comicService.getRecentUpdatedComics(page);
+    const result = await comicService.getRecentUpdatedComics(page, status);
     return res.json(result);
 };
 
 export const topComics = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const type = req.query.type as string;
+    const status = req.query.status as string;
 
-    const result = await comicService.getTopComics(type, page);
+    const result = await comicService.getTopComics(type, page, status);
     return res.json(result);
 };
 

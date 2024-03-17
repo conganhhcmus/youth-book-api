@@ -2,6 +2,7 @@ import { DEFAULT_COMIC_PAGE_SIZE, DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import ComicsModel from '@/models/comics';
 import { Types } from 'mongoose';
 import { Comic } from '@/types/comics';
+import { ComicStatus } from '@/constants/comic';
 
 const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
     const total = await ComicsModel.countDocuments().exec();
@@ -59,9 +60,16 @@ export const getRecommendComics = async (page: number) => {
     return getComicByPageAndQuery(page, query, sort);
 };
 
-export const getRecentUpdatedComics = async (page: number) => {
-    const query = {};
+export const getRecentUpdatedComics = async (page: number, status: string) => {
+    const query = status == 'all' ? {} : { status: ComicStatus[status] };
     const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort);
+};
+
+export const getTopComics = async (type: string, page: number, status: string) => {
+    const query = status == 'all' ? {} : { status: ComicStatus[status] };
+    const sort = { totalViews: -1, createTime: -1, updateTime: -1 };
 
     return getComicByPageAndQuery(page, query, sort);
 };
@@ -103,3 +111,6 @@ export const createComic = (values: Record<string, any>): Promise<Comic> => new 
 export const updateComicById = (id: string, values: Record<string, any>) => ComicsModel.findByIdAndUpdate(id, values, { new: true });
 
 export const deleteComicById = (id: string) => ComicsModel.findByIdAndDelete(id);
+
+export const updateTotalViewsById = (id: string) =>
+    ComicsModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $inc: { totalViews: 1 } }, { new: true });
