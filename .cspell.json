@@ -1,4 +1,15 @@
 {
-    "words": ["youth-book", "youthbook", "errmsg", "openapi"],
-    "ignorePaths": ["*.log", "commitlint.config.ts", "dist"]
+    "words": [
+        "youth-book",
+        "youthbook",
+        "errmsg",
+        "openapi",
+        "cloudinary",
+        "streamifier"
+    ],
+    "ignorePaths": [
+        "*.log",
+        "commitlint.config.ts",
+        "dist"
+    ]
 }

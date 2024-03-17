@@ -96,7 +96,7 @@ export const fetchInfo = async (payload: UserJwtPayload): Promise<{ token: strin
     if (!user) {
         throw new BadRequestError(USER_NOT_FOUND);
     }
-    if (payload.wallet !== user.wallet) {
+    if (payload.wallet !== user.wallet || payload.avatarImg !== user.avatarImg) {
         const { password, ...payloadNew } = user.toObject();
         token = createToken(payloadNew);
     }

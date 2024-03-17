@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { deleteUserById, getAllUser, getUserById, updateUserById } from '@/controllers/users';
+import { deleteUserById, getAllUser, getUserById, updateAvatarById, updateUserById } from '@/controllers/users';
 import { verifyAccessToken } from '@/middlewares/authToken';
 import { isAdmin, isAdminOrOwner } from '@/middlewares/usersValidation';
+import { multerUpload } from '@/middlewares/uploadFile';
 
 export default (router: Router) => {
     /**
@@ -120,4 +121,6 @@ export default (router: Router) => {
      *       - accessToken: []
      */
     router.delete('/users/:id', verifyAccessToken, isAdmin, deleteUserById);
+
+    router.post('/update-avatar/:id', verifyAccessToken, isAdminOrOwner, multerUpload.single('file'), updateAvatarById);
 };

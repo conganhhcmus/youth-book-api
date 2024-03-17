@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
     isActive: { type: Boolean, required: false, default: true },
     createTime: { type: Date, required: true },
     updateTime: { type: Date, required: false, default: moment().utc().toDate() },
+    avatarId: { type: String, required: false },
 });
 
 export default mongoose.model('User', UserSchema);
