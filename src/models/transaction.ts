@@ -9,6 +9,7 @@ const TransactionSchema = new mongoose.Schema({
     status: { type: Number, required: true },
     createTime: { type: Date, required: true },
     updateTime: { type: Date, required: false, default: moment().utc().toDate() },
+    updateBy: { type: Types.ObjectId, required: false },
 });
 
 export default mongoose.model('Transaction', TransactionSchema);

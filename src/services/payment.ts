@@ -36,7 +36,9 @@ export const buyChapter = async (amount: number, userId: string, chapterId: stri
 };
 
 export const getAllTransactionByUserId = async (userId: string, option: number, status: number[], page: number) => {
-    const result = await transactionRepository.getAllTransactionByUserId(userId, option, status, page);
+    const sort = { updateTime: -1, createTime: -1 };
+
+    const result = await transactionRepository.getAllTransactionByUserId(userId, option, status, page, sort);
 
     return result;
 };
@@ -47,14 +49,15 @@ export const getAllBuyTransactionByUserId = async (userId: string) => {
     return result;
 };
 
-export const getAllTransaction = async (option: number, status: number[], page: number) => {
-    const result = await transactionRepository.getAllTransaction(option, status, page);
+export const getAllTransaction = async (option: number, status: number[], page: number, q: string) => {
+    const sort = { updateTime: -1, createTime: -1 };
+    const result = await transactionRepository.getAllTransaction(option, status, page, q, sort);
 
     return result;
 };
 
-export const updateTransactionById = async (id: string, status: number) => {
-    const result = await transactionRepository.updateTransactionById(id, status);
+export const updateTransactionById = async (id: string, updateById: string, status: number) => {
+    const result = await transactionRepository.updateTransactionById(id, updateById, status);
     if (result.status === TransactionStatus.success) {
         await usersRepository.updateWalletById(result.targetId as string, result.amount);
     }

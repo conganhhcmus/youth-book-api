@@ -7,6 +7,7 @@ export interface Transaction {
     status: number;
     createTime: Date;
     updateTime: Date;
+    updateBy: string;
 }
 
 export interface TransactionResponse {
@@ -18,6 +19,7 @@ export interface TransactionResponse {
     status: number;
     createTime: Date;
     updateTime: Date;
+    updateBy: string;
 }
 
 export interface TransactionData {

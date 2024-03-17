@@ -3,7 +3,7 @@ import ComicsModel from '@/models/comics';
 import { Types } from 'mongoose';
 import { Comic } from '@/types/comics';
 
-const getComicByPageAndQuery = async (page: number, query: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
+const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
     const total = await ComicsModel.countDocuments().exec();
     const comics = await ComicsModel.aggregate([
         {
@@ -29,9 +29,10 @@ const getComicByPageAndQuery = async (page: number, query: {}, pageSize: number 
                 as: 'genres',
             },
         },
+        { $match: query },
+        { $sort: sort },
         { $skip: pageSize * page - pageSize },
         { $limit: pageSize },
-        { $match: query },
     ]);
 
     return { data: comics, totalPage: Math.ceil(total / pageSize), currentPage: page };
@@ -39,22 +40,30 @@ const getComicByPageAndQuery = async (page: number, query: {}, pageSize: number 
 
 export const getComics = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
-    return getComicByPageAndQuery(page, query, DEFAULT_PAGE_SIZE);
+    const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort, DEFAULT_PAGE_SIZE);
 };
 
 export const getComicsByGenres = async (type: string, page: number) => {
     const query = type == 'all' ? {} : { 'genres._id': new Types.ObjectId(type) };
-    return getComicByPageAndQuery(page, query);
+    const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort);
 };
 
 export const getRecommendComics = async (page: number) => {
     const query = { recommend: true };
-    return getComicByPageAndQuery(page, query);
+    const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort);
 };
 
 export const getRecentUpdatedComics = async (page: number) => {
     const query = {};
-    return getComicByPageAndQuery(page, query);
+    const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort);
 };
 
 export const getComicById = async (id: string) => {

@@ -1,3 +1,4 @@
+import { ComicStatusType } from '@/constants/comic';
 import moment from 'moment';
 import mongoose, { Types } from 'mongoose';
 
@@ -8,7 +9,7 @@ const ComicSchema = new mongoose.Schema({
     otherName: { type: [String], required: false, default: [] },
     totalFollowers: { type: Number, required: false, default: 0 },
     genres: { type: [Types.ObjectId], required: true },
-    status: { type: Number, required: false, default: 0 },
+    status: { type: Number, required: false, default: ComicStatusType.updating },
     recommend: { type: Boolean, required: false, default: false },
     totalViews: { type: Number, required: false, default: 0 },
     author: { type: String, required: false, default: 0 },

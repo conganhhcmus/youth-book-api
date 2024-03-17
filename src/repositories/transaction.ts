@@ -8,11 +8,14 @@ import { Types } from 'mongoose';
 export const createTransaction = (values: Record<string, any>): Promise<TransactionResponse> =>
     new TransactionModel(values).save().then((trans) => trans.toObject());
 
-export const getAllTransaction = async (option: number, status: number[], page: number) => {
-    const date = moment().utc().subtract(option, 'months').toDate();
-    const query = option !== 0 ? { status: { $in: status }, createTime: { $gt: date } } : { status: { $in: status } };
-    const total = await TransactionModel.countDocuments().exec();
-    const transaction = await TransactionModel.aggregate([
+export const getAllTransaction = async (option: number, status: number[], page: number, q: string, sort: {}) => {
+    const date = moment().utc().subtract(option, 'days').toDate();
+    const query =
+        option !== 0
+            ? { status: { $in: status }, updateTime: { $gt: date }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } }
+            : { status: { $in: status }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } };
+    const total = await TransactionModel.countDocuments(query).exec();
+    let transaction = await TransactionModel.aggregate([
         {
             $lookup: {
                 from: 'users',
@@ -21,22 +24,32 @@ export const getAllTransaction = async (option: number, status: number[], page: 
                 as: 'users',
             },
         },
-        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
-        { $limit: DEFAULT_PAGE_SIZE },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'updateBy',
+                foreignField: '_id',
+                as: 'updateUsers',
+            },
+        },
         { $match: query },
+        { $sort: sort },
+        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
     ]);
+    const limit = Math.min(DEFAULT_PAGE_SIZE, transaction.length);
 
-    return { data: transaction, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: transaction.slice(0, limit), totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
-export const getAllTransactionByUserId = async (userId: string, option: number, status: number[], page: number) => {
-    const date = moment().utc().subtract(option, 'months').toDate();
+export const getAllTransactionByUserId = async (userId: string, option: number, status: number[], page: number, sort: {}) => {
+    const date = moment().utc().subtract(option, 'days').toDate();
     const query =
         option !== 0
-            ? { status: { $in: status }, targetId: new Types.ObjectId(userId), createTime: { $gt: date } }
+            ? { status: { $in: status }, targetId: new Types.ObjectId(userId), updateTime: { $gt: date } }
             : { status: { $in: status }, targetId: new Types.ObjectId(userId) };
-    const total = await TransactionModel.countDocuments().exec();
+    const total = await TransactionModel.countDocuments(query).exec();
     const transaction = await TransactionModel.find(query)
+        .sort(sort)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
 
@@ -55,5 +68,9 @@ export const getAllBuyTransactionByUserId = async (userId: string) => {
     return transaction;
 };
 
-export const updateTransactionById = (id: string, status: number) =>
-    TransactionModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: { status: status } }, { new: true });
+export const updateTransactionById = (id: string, updateById: string, status: number) =>
+    TransactionModel.findOneAndUpdate(
+        { _id: new Types.ObjectId(id) },
+        { $set: { status: status, updateBy: new Types.ObjectId(updateById) } },
+        { new: true },
+    );

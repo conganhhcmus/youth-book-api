@@ -13,6 +13,15 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 
+export const isAdminOrCollaborator = (req: Request, res: Response, next: NextFunction) => {
+    const payload = req['identity'] as UserJwtPayload;
+
+    if (payload.role !== Roles.Admin && payload.role !== Roles.Collaborators) {
+        throw new ForbiddenError(USER_HAVE_NOT_PERMISSION);
+    }
+    next();
+};
+
 export const isAdminOrOwner = (req: Request, res: Response, next: NextFunction) => {
     const { id: userId } = req.params;
     const payload = req['identity'] as UserJwtPayload;

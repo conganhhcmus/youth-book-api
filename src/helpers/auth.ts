@@ -13,7 +13,7 @@ export const comparePassword = async (password: string, hashPassword: string) =>
 };
 
 export const createToken = (data: string | object) => {
-    return jwt.sign(data, TOKEN_SECRET_KEY, { expiresIn: '1h' });
+    return jwt.sign(data, TOKEN_SECRET_KEY, { expiresIn: '5m' });
 };
 
 export const createRefreshToken = (data: string | object) => {
