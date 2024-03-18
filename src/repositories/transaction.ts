@@ -76,7 +76,7 @@ export const updateTransactionById = (id: string, updateById: string, status: nu
     );
 
 export const getTotalAmountByDays = async (days: number) => {
-    const date = moment().utc().subtract(days, 'days').toDate();
+    const date = moment().utc().endOf('day').subtract(days, 'days').toDate();
     const query =
         days == 0
             ? { status: TransactionStatus.success, type: TransactionType.deposit }
