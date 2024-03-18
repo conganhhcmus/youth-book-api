@@ -32,3 +32,6 @@ export const getTotalUsers = async () => await UserModel.countDocuments().exec()
 
 export const updateAvatarById = async (id: string, avatarUrl: string, avatarId: string) =>
     await UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: { avatarImg: avatarUrl, avatarId: avatarId } });
+
+export const updateStatusById = async (id: string) =>
+    await UserModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, [{ $set: { isActive: { $eq: [false, '$isActive'] } } }]);

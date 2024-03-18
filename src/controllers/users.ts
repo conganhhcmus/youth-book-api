@@ -45,3 +45,11 @@ export const updateAvatarById = async (req: Request, res: Response) => {
 
     return res.status(201).json(result);
 };
+
+export const updateStatusById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await userService.updateStatusById(id);
+
+    return res.status(201).json(result);
+};

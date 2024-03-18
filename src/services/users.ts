@@ -44,3 +44,7 @@ export const updateWalletById = async (id: string, amount: number) => {
 export const updateAvatarById = async (id: string, avatarUrl: string, avatarId: string) => {
     return await userRepository.updateAvatarById(id, avatarUrl, avatarId);
 };
+
+export const updateStatusById = async (id: string) => {
+    return await userRepository.updateStatusById(id);
+};
