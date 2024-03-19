@@ -39,11 +39,18 @@ const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSiz
     return { data: comics, totalPage: Math.ceil(total / pageSize), currentPage: page };
 };
 
-export const getComics = async (page: number, q: string) => {
+export const getSearchComics = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const sort = { createTime: -1, updateTime: -1 };
 
     return getComicByPageAndQuery(page, query, sort);
+};
+
+export const getAllComics = async (page: number, q: string) => {
+    const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
+    const sort = { createTime: -1, updateTime: -1 };
+
+    return getComicByPageAndQuery(page, query, sort, DEFAULT_PAGE_SIZE);
 };
 
 export const getComicsByGenres = async (type: string, page: number) => {

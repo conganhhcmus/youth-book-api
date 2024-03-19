@@ -4,7 +4,14 @@ import * as chapterRepository from '@/repositories/chapters';
 import { ComicResponse, Comic } from '@/types/comics';
 
 export const searchComic = async (page: number, q: string) => {
-    const result = await comicRepository.getComics(page, q);
+    const result = await comicRepository.getSearchComics(page, q);
+    const data = result.data;
+
+    return { totalPage: result.totalPage, currentPage: result.currentPage, data: data };
+};
+
+export const getAllComic = async (page: number, q: string) => {
+    const result = await comicRepository.getAllComics(page, q);
     const data = result.data;
 
     return { totalPage: result.totalPage, currentPage: result.currentPage, data: data };

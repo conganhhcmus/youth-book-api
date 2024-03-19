@@ -10,6 +10,14 @@ export const searchComics = async (req: Request, res: Response) => {
     return res.json(result);
 };
 
+export const getAllComics = async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const query = (req.query.q as string) || '';
+
+    const result = await comicService.getAllComic(page, query);
+    return res.json(result);
+};
+
 export const recommendComics = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
 
