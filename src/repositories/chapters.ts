@@ -16,7 +16,7 @@ export const getAllChapterByComicId = async (page: number, q: string, comicId: s
     const query = !!q
         ? { name: { $regex: '.*' + q + '.*', $options: 'i' }, comicId: new Types.ObjectId(comicId) }
         : { comicId: new Types.ObjectId(comicId) };
-    const total = await ChapterModel.countDocuments().exec();
+    const total = await ChapterModel.countDocuments(query).exec();
     const chapter = await ChapterModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
