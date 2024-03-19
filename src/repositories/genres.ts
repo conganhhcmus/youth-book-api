@@ -4,7 +4,7 @@ import { GenresResponse } from '@/types/genres';
 
 export const getAllGenres = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
-    const total = await GenresModel.countDocuments().exec();
+    const total = await GenresModel.countDocuments(query).exec();
     const genres = await GenresModel.find(query)
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);

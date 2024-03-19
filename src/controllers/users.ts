@@ -8,7 +8,9 @@ import { Request, Response } from 'express';
 export const getAllUser = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const q = (req.query.q as string) || '';
-    const result = await userService.getAllUsers(page, q);
+    const type = (req.query.type as string) || '0';
+
+    const result = await userService.getAllUsers(page, q, type);
     return res.status(200).json(result);
 };
 

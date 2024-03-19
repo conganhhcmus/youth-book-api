@@ -15,7 +15,7 @@ export default function (app: Application) {
         if (error instanceof ApplicationError) {
             logger.error(error?.message, error.stack);
             if (error.message) {
-                return res.status(error.code).send(error.message);
+                return res.status(error.code).json(error.message);
             } else {
                 return res.sendStatus(error.code);
             }

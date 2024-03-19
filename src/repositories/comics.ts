@@ -5,7 +5,7 @@ import { Comic } from '@/types/comics';
 import { ComicStatus } from '@/constants/comic';
 
 const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
-    const total = await ComicsModel.countDocuments().exec();
+    const total = await ComicsModel.countDocuments(query).exec();
     const comics = await ComicsModel.aggregate([
         {
             $lookup: {
@@ -43,7 +43,7 @@ export const getComics = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const sort = { createTime: -1, updateTime: -1 };
 
-    return getComicByPageAndQuery(page, query, sort, DEFAULT_PAGE_SIZE);
+    return getComicByPageAndQuery(page, query, sort);
 };
 
 export const getComicsByGenres = async (type: string, page: number) => {

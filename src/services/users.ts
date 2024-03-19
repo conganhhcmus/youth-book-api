@@ -3,8 +3,8 @@ import * as userRepository from '@/repositories/users';
 import { BadRequestError } from '@/types/error';
 import { User } from '@/types/users';
 
-export const getAllUsers = async (page: number, q: string) => {
-    return await userRepository.getUsers(page, q);
+export const getAllUsers = async (page: number, q: string, type: string) => {
+    return await userRepository.getUsers(page, q, type);
 };
 
 export const getUserById = async (id: string) => {

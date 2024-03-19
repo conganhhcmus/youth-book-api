@@ -1,16 +1,52 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
+import { TransactionStatus } from '@/constants/payment';
 import UserModel from '@/models/users';
 import { User } from '@/types/users';
 import { Types } from 'mongoose';
 
-export const getUsers = async (page: number, q: string) => {
-    const query = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
-    const total = await UserModel.countDocuments().exec();
-    const users = await UserModel.find(query)
-        .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
-        .limit(DEFAULT_PAGE_SIZE);
+export const getUsers = async (page: number, q: string, type: string) => {
+    const queryType = type === '0' ? {} : { 'transactions.0': { $exists: type === '1' } };
+    const query = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' }, ...queryType } : { ...queryType };
+    const total = await UserModel.aggregate([
+        {
+            $lookup: {
+                from: 'transactions',
+                localField: '_id',
+                foreignField: 'targetId',
+                pipeline: [
+                    {
+                        $match: {
+                            status: TransactionStatus.success,
+                        },
+                    },
+                ],
+                as: 'transactions',
+            },
+        },
+        { $match: query },
+    ]);
+    const users = await UserModel.aggregate([
+        {
+            $lookup: {
+                from: 'transactions',
+                localField: '_id',
+                foreignField: 'targetId',
+                pipeline: [
+                    {
+                        $match: {
+                            status: TransactionStatus.success,
+                        },
+                    },
+                ],
+                as: 'transactions',
+            },
+        },
+        { $match: query },
+        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
+        { $limit: DEFAULT_PAGE_SIZE },
+    ]);
 
-    return { data: users, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: users, totalPage: Math.ceil(total.length / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
 export const getUserByUserName = (username: string) => UserModel.findOne({ username });

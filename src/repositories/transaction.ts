@@ -14,7 +14,26 @@ export const getAllTransaction = async (option: number, status: number[], page: 
         option !== 0
             ? { status: { $in: status }, updateTime: { $gt: date }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } }
             : { status: { $in: status }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } };
-    const total = await TransactionModel.countDocuments(query).exec();
+    const total = await TransactionModel.aggregate([
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'targetId',
+                foreignField: '_id',
+                as: 'users',
+            },
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'updateBy',
+                foreignField: '_id',
+                as: 'updateUsers',
+            },
+        },
+        { $match: query },
+    ]);
+
     let transaction = await TransactionModel.aggregate([
         {
             $lookup: {
@@ -38,7 +57,7 @@ export const getAllTransaction = async (option: number, status: number[], page: 
     ]);
     const limit = Math.min(DEFAULT_PAGE_SIZE, transaction.length);
 
-    return { data: transaction.slice(0, limit), totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: transaction.slice(0, limit), totalPage: Math.ceil(total.length / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
 export const getAllTransactionByUserId = async (userId: string, option: number, status: number[], page: number, sort: {}) => {
