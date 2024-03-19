@@ -2,6 +2,13 @@ import * as chapterService from '@/services/chapters';
 import { Chapter } from '@/types/chapter';
 import { Request, Response } from 'express';
 
+export const getFullChapter = async (req: Request, res: Response) => {
+    const comicId = (req.query.comicId as string) || '';
+
+    const result = await chapterService.getFullChapterByComicId(comicId);
+    return res.json(result);
+};
+
 export const getAllChapter = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const q = (req.query.q as string) || '';

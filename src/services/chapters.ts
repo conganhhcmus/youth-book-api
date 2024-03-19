@@ -7,6 +7,12 @@ export const getAllChapterByComicId = async (page: number, q: string, comicId: s
     return result;
 };
 
+export const getFullChapterByComicId = async (comicId: string) => {
+    const result = await chapterRepository.getFullChapterByComicId(comicId);
+
+    return result;
+};
+
 export const getChapterById = async (id: string) => {
     console.log(id);
     const result = await chapterRepository.getChapterById(id);

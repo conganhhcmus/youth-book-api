@@ -24,4 +24,11 @@ export const getAllChapterByComicId = async (page: number, q: string, comicId: s
     return { data: chapter, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
 };
 
+export const getFullChapterByComicId = async (comicId: string) => {
+    const query = { comicId: new Types.ObjectId(comicId) };
+    const chapter = await ChapterModel.find(query);
+
+    return chapter;
+};
+
 export const getChapterById = (id: string) => ChapterModel.findById(id);
