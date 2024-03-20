@@ -26,6 +26,7 @@ export const buyChapter = async (amount: number, userId: string, chapterId: stri
         type: TransactionType.buy,
         status: TransactionStatus.success,
         createTime: moment().utc().toDate(),
+        updateTime: moment().utc().toDate(),
     } as Transaction;
 
     const result = await transactionRepository.createTransaction(data);

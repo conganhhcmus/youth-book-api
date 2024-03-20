@@ -81,7 +81,6 @@ export const getAllBuyTransactionByUserId = async (userId: string) => {
         status: { $in: TransactionStatus.success },
         targetId: new Types.ObjectId(userId),
     };
-    const total = await TransactionModel.countDocuments().exec();
     const transaction = await TransactionModel.find(query);
 
     return transaction;
@@ -90,7 +89,7 @@ export const getAllBuyTransactionByUserId = async (userId: string) => {
 export const updateTransactionById = (id: string, updateById: string, status: number) =>
     TransactionModel.findOneAndUpdate(
         { _id: new Types.ObjectId(id) },
-        { $set: { status: status, updateBy: new Types.ObjectId(updateById) } },
+        { $set: { status: status, updateBy: new Types.ObjectId(updateById), updateTime: moment().utc().toDate() } },
         { new: true },
     );
 
