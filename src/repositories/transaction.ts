@@ -9,7 +9,7 @@ export const createTransaction = (values: Record<string, any>): Promise<Transact
     new TransactionModel(values).save().then((trans) => trans.toObject());
 
 export const getAllTransaction = async (option: number, status: number[], page: number, q: string, sort: {}) => {
-    const date = moment().utc().subtract(option, 'days').toDate();
+    const date = moment().utc().endOf('day').subtract(option, 'days').toDate();
     const query =
         option !== 0
             ? { status: { $in: status }, updateTime: { $gt: date }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } }
@@ -61,7 +61,7 @@ export const getAllTransaction = async (option: number, status: number[], page: 
 };
 
 export const getAllTransactionByUserId = async (userId: string, option: number, status: number[], page: number, sort: {}) => {
-    const date = moment().utc().subtract(option, 'days').toDate();
+    const date = moment().utc().endOf('day').subtract(option, 'days').toDate();
     const query =
         option !== 0
             ? { status: { $in: status }, targetId: new Types.ObjectId(userId), updateTime: { $gt: date } }
