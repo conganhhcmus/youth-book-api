@@ -10,6 +10,7 @@
     "ignorePaths": [
         "*.log",
         "commitlint.config.ts",
-        "dist"
+        "dist",
+        "*/db/*"
     ]
 }
