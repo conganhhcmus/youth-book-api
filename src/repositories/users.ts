@@ -42,6 +42,7 @@ export const getUsers = async (page: number, q: string, type: string) => {
             },
         },
         { $match: query },
+        { $sort: { createTime: -1 } },
         { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
         { $limit: DEFAULT_PAGE_SIZE },
     ]);
