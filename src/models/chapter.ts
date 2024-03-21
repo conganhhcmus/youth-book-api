@@ -2,8 +2,8 @@ import mongoose, { Types } from 'mongoose';
 import moment from 'moment';
 
 const ChapterSchema = new mongoose.Schema({
-    comicId: { type: Types.ObjectId, required: true },
-    name: { type: String, required: true },
+    comicId: { type: Types.ObjectId, required: true, index: true },
+    name: { type: String, required: true, index: true },
     shortName: { type: String, required: true },
     type: { type: Number, required: true },
     content: { type: String, required: false },

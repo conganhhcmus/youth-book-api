@@ -3,7 +3,7 @@ import moment from 'moment';
 import mongoose, { Types } from 'mongoose';
 
 const ComicSchema = new mongoose.Schema({
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     description: { type: String, required: false, default: '' },
     thumbnail: { type: String, required: false },
     thumbnailId: { type: String, required: false },

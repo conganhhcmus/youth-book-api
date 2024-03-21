@@ -2,7 +2,7 @@ import moment from 'moment';
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: true, index: true },
     email: { type: String, required: false, default: '' },
     fullName: { type: String, required: false, default: '' },
     role: { type: Number, required: false, default: 0 },
