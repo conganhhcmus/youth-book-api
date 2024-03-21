@@ -117,6 +117,9 @@ export const createComic = (values: Record<string, any>): Promise<Comic> => new 
 
 export const updateComicById = (id: string, values: Record<string, any>) => ComicsModel.findByIdAndUpdate(id, values, { new: true });
 
+export const updateThumbnailById = async (id: string, thumbnailUrl: string, thumbnailId: string) =>
+    await ComicsModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { $set: { thumbnail: thumbnailUrl, thumbnailId: thumbnailId } });
+
 export const deleteComicById = (id: string) => ComicsModel.findByIdAndDelete(id);
 
 export const updateTotalViewsById = (id: string) =>

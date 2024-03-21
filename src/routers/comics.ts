@@ -8,11 +8,13 @@ import {
     recommendComics,
     topComics,
     updateComic,
+    updateThumbnail,
 } from '@/controllers/comics';
 import { Router } from 'express';
 import { searchComics } from '@/controllers/comics';
 import { verifyAccessToken } from '@/middlewares/authToken';
 import { isAdmin } from '@/middlewares/usersValidation';
+import { multerUpload } from '@/middlewares/uploadFile';
 
 export default (router: Router) => {
     /**
@@ -114,7 +116,9 @@ export default (router: Router) => {
 
     router.get('/comics/genres', getComicsByGenres);
 
-    router.post('/comics/add', verifyAccessToken, isAdmin, addComic);
+    router.post('/comics/add', verifyAccessToken, isAdmin, multerUpload.single('file'), addComic);
+
+    router.post('/update-thumbnail/:id', verifyAccessToken, isAdmin, multerUpload.single('file'), updateThumbnail);
 
     router.put('/comics/:id', verifyAccessToken, isAdmin, updateComic);
 

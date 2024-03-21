@@ -5,7 +5,8 @@ import mongoose, { Types } from 'mongoose';
 const ComicSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: false, default: '' },
-    thumbnail: { type: String, required: true },
+    thumbnail: { type: String, required: false },
+    thumbnailId: { type: String, required: false },
     otherName: { type: [String], required: false, default: [] },
     totalFollowers: { type: Number, required: false, default: 0 },
     genres: { type: [Types.ObjectId], required: true },

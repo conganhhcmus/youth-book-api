@@ -1,5 +1,8 @@
+import { INVALID_PARAMETERS } from '@/constants/error';
+import { cloudinaryRemove, cloudinaryUpload } from '@/middlewares/uploadFile';
 import * as comicService from '@/services/comics';
 import { Comic, ComicResponse } from '@/types/comics';
+import { BadRequestError } from '@/types/error';
 import { Request, Response } from 'express';
 
 export const searchComics = async (req: Request, res: Response) => {
@@ -63,6 +66,21 @@ export const updateComic = async (req: Request, res: Response) => {
 
     const result = await comicService.updateComicById(id, data);
     return res.json(result);
+};
+
+export const updateThumbnail = async (req: Request, res: Response) => {
+    if (!req.file) {
+        throw new BadRequestError(INVALID_PARAMETERS);
+    }
+    const { id } = req.params;
+
+    const resultUpload = await cloudinaryUpload(req.file);
+
+    const result = await comicService.updateThumbnailById(id, resultUpload.secure_url, resultUpload.public_id);
+
+    result.thumbnailId && (await cloudinaryRemove(result.thumbnailId));
+
+    return res.status(201).json(result);
 };
 
 export const getComicInfo = async (req: Request, res: Response) => {

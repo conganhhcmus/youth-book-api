@@ -1,4 +1,3 @@
-import { getComicResponse } from '@/helpers/comic';
 import * as comicRepository from '@/repositories/comics';
 import * as chapterRepository from '@/repositories/chapters';
 import { ComicResponse, Comic } from '@/types/comics';
@@ -39,15 +38,19 @@ export const getTopComics = async (type: string, page: number, status: string) =
     return result;
 };
 
-export const addComic = async (comic: Comic): Promise<ComicResponse> => {
+export const addComic = async (comic: Comic) => {
     const result = await comicRepository.createComic(comic);
 
-    return getComicResponse(result);
+    return result;
 };
 
 export const updateComicById = async (id: string, comic: Comic) => {
     const result = await comicRepository.updateComicById(id, comic);
     return result;
+};
+
+export const updateThumbnailById = async (id: string, thumbnailUrl: string, thumbnailId: string) => {
+    return await comicRepository.updateThumbnailById(id, thumbnailUrl, thumbnailId);
 };
 
 export const getComicById = async (id: string) => {
