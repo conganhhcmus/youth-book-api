@@ -1,7 +1,5 @@
-name: Lint & Deployment
-env:
-    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+name: Check, Build & Deployment
+
 on:
     push:
         branches: [master]
@@ -41,11 +39,22 @@ jobs:
             - if: github.event_name == 'pull_request'
               run: echo "${{ github.event.pull_request.title }}" | yarn commitlint
 
+    deploy-on-render:
+        name: Deploy Render
+        env:
+          RENDER_WEBHOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        environment: Production
+        if: github.ref == 'refs/heads/master'
+        needs: [check]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to Render   
+              run: curl "$RENDER_WEBHOOK"
+
     build:
         name: Build
         needs: [check]
         runs-on: ubuntu-latest
-        environment: production
         steps:
           - uses: actions/checkout@v4
           - name: Use Node.js 20.x
@@ -74,8 +83,13 @@ jobs:
               overwrite: true
               retention-days: 7
 
-    deploy:
-        name: Deploy
+    deploy-on-vercel:
+        name: Deploy Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        environment: Production-BK
         if: github.ref == 'refs/heads/master'
         needs: [build]
         runs-on: ubuntu-latest
@@ -94,8 +108,8 @@ jobs:
             - name: Install Vercel CLI
               run: yarn global add vercel@latest
             - name: Pull Vercel Environment Information
-              run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
             - name: Build Project Artifacts
-              run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel build --prod --token=$VERCEL_TOKEN
             - name: Deploy Project Artifacts to Vercel
-              run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
