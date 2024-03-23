@@ -6,8 +6,9 @@ import { Types } from 'mongoose';
 
 export const getUsers = async (page: number, q: string, type: string) => {
     const queryType = type === '0' ? {} : { 'transactions.0': { $exists: type === '1' } };
-    const query = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' }, ...queryType } : { ...queryType };
+    const queryUsername = !!q ? { username: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await UserModel.aggregate([
+        { $match: queryUsername },
         {
             $lookup: {
                 from: 'transactions',
@@ -23,9 +24,10 @@ export const getUsers = async (page: number, q: string, type: string) => {
                 as: 'transactions',
             },
         },
-        { $match: query },
+        { $match: queryType },
     ]);
     const users = await UserModel.aggregate([
+        { $match: queryUsername },
         {
             $lookup: {
                 from: 'transactions',
@@ -41,7 +43,7 @@ export const getUsers = async (page: number, q: string, type: string) => {
                 as: 'transactions',
             },
         },
-        { $match: query },
+        { $match: queryType },
         { $sort: { createTime: -1 } },
         { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
         { $limit: DEFAULT_PAGE_SIZE },

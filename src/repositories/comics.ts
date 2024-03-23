@@ -7,6 +7,10 @@ import { ComicStatus } from '@/constants/comic';
 const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSize: number = DEFAULT_COMIC_PAGE_SIZE) => {
     const total = await ComicsModel.countDocuments(query).exec();
     const comics = await ComicsModel.aggregate([
+        { $match: query },
+        { $sort: sort },
+        { $skip: pageSize * page - pageSize },
+        { $limit: pageSize },
         {
             $lookup: {
                 from: 'chapters',
@@ -30,10 +34,6 @@ const getComicByPageAndQuery = async (page: number, query: {}, sort: {}, pageSiz
                 as: 'genres',
             },
         },
-        { $match: query },
-        { $sort: sort },
-        { $skip: pageSize * page - pageSize },
-        { $limit: pageSize },
     ]);
 
     return { data: comics, totalPage: Math.ceil(total / pageSize), currentPage: page };
@@ -54,7 +54,7 @@ export const getAllComics = async (page: number, q: string) => {
 };
 
 export const getComicsByGenres = async (type: string, page: number) => {
-    const query = type == 'all' ? {} : { 'genres._id': new Types.ObjectId(type) };
+    const query = type == 'all' ? {} : { genres: { $in: [new Types.ObjectId(type)] } };
     const sort = { createTime: -1, updateTime: -1 };
 
     return getComicByPageAndQuery(page, query, sort);
@@ -84,6 +84,7 @@ export const getTopComics = async (type: string, page: number, status: string) =
 export const getComicById = async (id: string) => {
     const query = { _id: new Types.ObjectId(id) };
     const comics = await ComicsModel.aggregate([
+        { $match: query },
         {
             $lookup: {
                 from: 'chapters',
@@ -107,7 +108,6 @@ export const getComicById = async (id: string) => {
                 as: 'genres',
             },
         },
-        { $match: query },
     ]);
 
     return comics[0] || undefined;

@@ -10,11 +10,10 @@ export const createTransaction = (values: Record<string, any>): Promise<Transact
 
 export const getAllTransaction = async (option: number, status: number[], page: number, q: string, sort: {}) => {
     const date = moment().utc().endOf('day').subtract(option, 'days').toDate();
-    const query =
-        option !== 0
-            ? { status: { $in: status }, updateTime: { $gt: date }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } }
-            : { status: { $in: status }, 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } };
+    const queryOption = option !== 0 ? { status: { $in: status }, updateTime: { $gt: date } } : { status: { $in: status } };
+    const querySearch = !!q ? { 'users.username': { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await TransactionModel.aggregate([
+        { $match: queryOption },
         {
             $lookup: {
                 from: 'users',
@@ -23,6 +22,7 @@ export const getAllTransaction = async (option: number, status: number[], page: 
                 as: 'users',
             },
         },
+        { $match: querySearch },
         {
             $lookup: {
                 from: 'users',
@@ -31,10 +31,10 @@ export const getAllTransaction = async (option: number, status: number[], page: 
                 as: 'updateUsers',
             },
         },
-        { $match: query },
     ]);
 
     let transaction = await TransactionModel.aggregate([
+        { $match: queryOption },
         {
             $lookup: {
                 from: 'users',
@@ -43,6 +43,9 @@ export const getAllTransaction = async (option: number, status: number[], page: 
                 as: 'users',
             },
         },
+        { $match: querySearch },
+        { $sort: sort },
+        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
         {
             $lookup: {
                 from: 'users',
@@ -51,9 +54,6 @@ export const getAllTransaction = async (option: number, status: number[], page: 
                 as: 'updateUsers',
             },
         },
-        { $match: query },
-        { $sort: sort },
-        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
     ]);
     const limit = Math.min(DEFAULT_PAGE_SIZE, transaction.length);
 
