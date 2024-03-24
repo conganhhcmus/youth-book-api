@@ -39,17 +39,34 @@ jobs:
             - if: github.event_name == 'pull_request'
               run: echo "${{ github.event.pull_request.title }}" | yarn commitlint
 
-    deploy-on-render:
-        name: Deploy Render
+    deploy-on-aws:
+        name: Deploy AWS
         env:
-          RENDER_WEBHOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{secrets.SSH_HOST}}
+          USER_NAME: ${{secrets.USER_NAME}}
+
         environment: Production
         if: github.ref == 'refs/heads/master'
         needs: [check]
         runs-on: ubuntu-latest
         steps:
-            - name: Deploy to Render   
-              run: curl "$RENDER_WEBHOOK"
+            - name: Deploy to AWS
+              run: |
+                echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+                ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+                    # Now we have got the access of EC2 and we will start the deploy .
+                    cd /home/ec2-user/youth-book-api &&
+                    git checkout master &&
+                    git fetch --all &&
+                    git reset --hard origin/master &&
+                    git pull origin master &&
+                    yarn &&
+                    yarn build &&
+                    pm2 stop ./dist/app.js &&
+                    pm2 start ./dist/app.js
+                '
 
     build:
         name: Build
