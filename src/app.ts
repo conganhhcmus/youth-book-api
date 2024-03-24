@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 /** HTTP GET Request */
 app.get('/', (req: Request, res: Response) => {
-    res.status(201).json('Youth Book API is running!');
+    res.status(200).json('Youth Book API is running!');
 });
 
 /** api routes */
