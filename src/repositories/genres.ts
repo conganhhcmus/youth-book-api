@@ -6,6 +6,7 @@ export const getAllGenres = async (page: number, q: string) => {
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await GenresModel.countDocuments(query).exec();
     const genres = await GenresModel.find(query)
+        .sort({ name: 1 })
         .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
         .limit(DEFAULT_PAGE_SIZE);
 
@@ -13,7 +14,7 @@ export const getAllGenres = async (page: number, q: string) => {
 };
 
 export const getFullGenres = async () => {
-    const genres = await GenresModel.find({});
+    const genres = await GenresModel.find({}).sort({ name: 1 });
 
     return genres;
 };
