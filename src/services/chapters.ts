@@ -1,5 +1,8 @@
 import * as chapterRepository from '@/repositories/chapters';
+import * as comicRepository from '@/repositories/comics';
+import * as viewerRepository from '@/repositories/viewer';
 import { Chapter, ChapterResponse } from '@/types/chapter';
+import { Viewer } from '@/types/viewer';
 
 export const getAllChapterByComicId = async (page: number, q: string, comicId: string) => {
     const result = await chapterRepository.getAllChapterByComicId(page, q, comicId);
@@ -13,9 +16,18 @@ export const getFullChapterByComicId = async (comicId: string) => {
     return result;
 };
 
-export const getChapterById = async (id: string) => {
-    console.log(id);
+export const getChapterById = async (id: string, userId: string) => {
     const result = await chapterRepository.getChapterById(id);
+
+    // update comic views
+
+    await viewerRepository.addViewer({
+        userId: userId,
+        chapterId: id,
+        comicId: result.comicId,
+    } as Viewer);
+
+    result.comicId && (await comicRepository.updateTotalViewsById(result.comicId.toString()));
 
     return result;
 };

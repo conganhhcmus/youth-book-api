@@ -56,9 +56,6 @@ export const updateThumbnailById = async (id: string, thumbnailUrl: string, thum
 export const getComicById = async (id: string) => {
     const result = await comicRepository.getComicById(id);
 
-    // update views
-    await comicRepository.updateTotalViewsById(id);
-
     return result;
 };
 

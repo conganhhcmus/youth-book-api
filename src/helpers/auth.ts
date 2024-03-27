@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { REFRESH_TOKEN_SECRET_KEY, TOKEN_SECRET_KEY } from '@/config';
+import { UserJwtPayload } from '@/types/users';
 
 const saltRounds = 10;
 
@@ -26,4 +27,11 @@ export const verifyToken = (token: string) => {
 
 export const verifyRefreshToken = (token: string) => {
     return jwt.verify(token, REFRESH_TOKEN_SECRET_KEY);
+};
+
+export const parseUserInfoFromToken = (token: string): UserJwtPayload => {
+    if (!token) {
+        return null;
+    }
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 };

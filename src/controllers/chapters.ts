@@ -1,5 +1,6 @@
 import * as chapterService from '@/services/chapters';
 import { Chapter } from '@/types/chapter';
+import { UserJwtPayload } from '@/types/users';
 import { Request, Response } from 'express';
 
 export const getFullChapter = async (req: Request, res: Response) => {
@@ -20,8 +21,9 @@ export const getAllChapter = async (req: Request, res: Response) => {
 
 export const getChapterById = async (req: Request, res: Response) => {
     const { id } = req.params;
-
-    const result = await chapterService.getChapterById(id);
+    const payload = req['identity'] as UserJwtPayload;
+    const userId = (payload && payload._id) || null;
+    const result = await chapterService.getChapterById(id, userId);
     return res.json(result);
 };
 
