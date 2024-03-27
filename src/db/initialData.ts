@@ -90,4 +90,4 @@ const initialData = async () => {
     console.log(resultTransaction);
 };
 
-initialData();
+export default initialData;

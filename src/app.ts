@@ -41,3 +41,6 @@ mongoose.Promise = Promise;
 mongoose.set('strictQuery', true);
 mongoose.connect(ATLAS_URI);
 mongoose.connection.on('error', (error: Error) => console.log(error));
+
+// import initialData from '@/db/initialData';
+// initialData();
