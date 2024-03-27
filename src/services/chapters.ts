@@ -20,14 +20,19 @@ export const getChapterById = async (id: string, userId: string) => {
     const result = await chapterRepository.getChapterById(id);
 
     // update comic views
-
-    await viewerRepository.addViewer({
+    const data = {
         userId: userId,
         chapterId: id,
         comicId: result.comicId,
-    } as Viewer);
+    } as Viewer;
 
-    result.comicId && (await comicRepository.updateTotalViewsById(result.comicId.toString()));
+    if (userId) {
+        const updateResult = await viewerRepository.updateViewer(data);
+        updateResult.upsertedId && (await comicRepository.updateTotalViewsById(result.comicId.toString()));
+    } else {
+        await viewerRepository.addViewer(data);
+        result.comicId && (await comicRepository.updateTotalViewsById(result.comicId.toString()));
+    }
 
     return result;
 };

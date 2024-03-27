@@ -1,6 +1,6 @@
 import * as comicRepository from '@/repositories/comics';
 import * as chapterRepository from '@/repositories/chapters';
-import { ComicResponse, Comic } from '@/types/comics';
+import { Comic } from '@/types/comics';
 
 export const searchComic = async (page: number, q: string) => {
     const result = await comicRepository.getSearchComics(page, q);
@@ -35,6 +35,7 @@ export const getComicsByGenres = async (type: string, page: number) => {
 
 export const getTopComics = async (type: string, page: number, status: string) => {
     const result = await comicRepository.getTopComics(type, page, status);
+
     return result;
 };
 
