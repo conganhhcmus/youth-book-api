@@ -1,16 +1,16 @@
-import { DEFAULT_PAGE_SIZE } from '@/constants/paging';
 import GenresModel from '@/models/genres';
 import { GenresResponse } from '@/types/genres';
 
 export const getAllGenres = async (page: number, q: string) => {
+    const defaultPageSize = 10;
     const query = !!q ? { name: { $regex: '.*' + q + '.*', $options: 'i' } } : {};
     const total = await GenresModel.countDocuments(query).exec();
     const genres = await GenresModel.find(query)
         .sort({ name: 1 })
-        .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
-        .limit(DEFAULT_PAGE_SIZE);
+        .skip(defaultPageSize * page - defaultPageSize)
+        .limit(defaultPageSize);
 
-    return { data: genres, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
+    return { data: genres, totalPage: Math.ceil(total / defaultPageSize), currentPage: page };
 };
 
 export const getFullGenres = async () => {
