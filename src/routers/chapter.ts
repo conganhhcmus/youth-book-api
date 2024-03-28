@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { addChapter, deleteChapter, getAllChapter, getChapterById, getFullChapter, updateChapter } from '@/controllers/chapters';
-import { verifyAccessToken } from '@/middlewares/authToken';
+import { getUserInfoIfLogin, verifyAccessToken } from '@/middlewares/authToken';
 import { isAdmin } from '@/middlewares/usersValidation';
 
 export default (router: Router) => {
     router.get('/chapters/get-full', getFullChapter);
 
-    router.get('/chapters/:id', getChapterById);
+    router.get('/chapters/:id', getUserInfoIfLogin, getChapterById);
 
     router.post('/chapters/add', verifyAccessToken, isAdmin, addChapter);
 

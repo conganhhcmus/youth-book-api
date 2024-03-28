@@ -19,4 +19,5 @@ export interface ChapterResponse {
     price: number;
     updateTime: Date;
     createTime: Date;
+    totalViews: number;
 }

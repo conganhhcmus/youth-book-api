@@ -17,9 +17,32 @@ export const getAllChapterByComicId = async (page: number, q: string, comicId: s
         ? { name: { $regex: '.*' + q + '.*', $options: 'i' }, comicId: new Types.ObjectId(comicId) }
         : { comicId: new Types.ObjectId(comicId) };
     const total = await ChapterModel.countDocuments(query).exec();
-    const chapter = await ChapterModel.find(query)
-        .skip(DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE)
-        .limit(DEFAULT_PAGE_SIZE);
+    const chapter = await ChapterModel.aggregate([
+        { $match: query },
+        { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
+        { $limit: DEFAULT_PAGE_SIZE },
+        {
+            $lookup: {
+                from: 'viewers',
+                localField: '_id',
+                foreignField: 'chapterId',
+                pipeline: [
+                    {
+                        $group: {
+                            _id: '$chapterId',
+                            count: { $sum: 1 },
+                        },
+                    },
+                ],
+                as: 'totalViews',
+            },
+        },
+        {
+            $set: {
+                totalViews: { $arrayElemAt: ['$totalViews.count', 0] },
+            },
+        },
+    ]);
 
     return { data: chapter, totalPage: Math.ceil(total / DEFAULT_PAGE_SIZE), currentPage: page };
 };

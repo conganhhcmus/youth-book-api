@@ -1,11 +1,12 @@
 {
     "words": [
-        "youth-book",
-        "youthbook",
+        "cloudinary",
         "errmsg",
         "openapi",
-        "cloudinary",
-        "streamifier"
+        "streamifier",
+        "upserted",
+        "youth-book",
+        "youthbook"
     ],
     "ignorePaths": [
         "*.log",
