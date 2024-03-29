@@ -43,8 +43,8 @@ export const getViewerGroupByUserId = async (q: string, page: number, type: numb
         {
             $group: {
                 _id: '$userId',
-                chapters: { $push: '$chapterId' },
-                comics: { $push: '$comicId' },
+                chapters: { $addToSet: '$chapterId' },
+                comics: { $addToSet: '$comicId' },
             },
         },
         {
@@ -61,7 +61,7 @@ export const getViewerGroupByUserId = async (q: string, page: number, type: numb
             },
         },
         { $match: query },
-        { $sort: { username: -1 } },
+        { $sort: { username: 1 } },
         { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
         { $limit: DEFAULT_PAGE_SIZE },
     ]);
@@ -147,7 +147,7 @@ export const getViewerDetailByUserId = async (userId: string, q: string, page: n
                 chapterName: { $arrayElemAt: ['$chapters.name', 0] },
             },
         },
-        { $sort: { username: -1, comicName: -1 } },
+        { $sort: { username: 1, comicName: 1, chapterName: 1 } },
         { $skip: DEFAULT_PAGE_SIZE * page - DEFAULT_PAGE_SIZE },
         { $limit: DEFAULT_PAGE_SIZE },
     ]);
@@ -213,7 +213,7 @@ export const getAllViewerDetailByUserId = async (userId: string, type: number): 
                 chapterName: { $arrayElemAt: ['$chapters.name', 0] },
             },
         },
-        { $sort: { username: -1, comicName: -1 } },
+        { $sort: { username: 1, comicName: 1 } },
     ]);
 
     const result = viewerGroupList.map(

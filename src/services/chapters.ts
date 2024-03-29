@@ -16,8 +16,10 @@ export const getFullChapterByComicId = async (comicId: string) => {
     return result;
 };
 
-export const getChapterById = async (id: string, userId: string) => {
+export const getChapterById = async (id: string, userId: string, skipCount: boolean) => {
     const result = await chapterRepository.getChapterById(id);
+
+    if (skipCount) return result;
 
     // update comic views
     const data = {

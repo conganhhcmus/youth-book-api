@@ -21,9 +21,10 @@ export const getAllChapter = async (req: Request, res: Response) => {
 
 export const getChapterById = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const skipCount = (req.query.skipCount as string) === 'true' || false;
     const payload = req['identity'] as UserJwtPayload;
     const userId = (payload && payload._id) || null;
-    const result = await chapterService.getChapterById(id, userId);
+    const result = await chapterService.getChapterById(id, userId, skipCount);
     return res.json(result);
 };
 
