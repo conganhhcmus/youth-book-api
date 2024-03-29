@@ -5,8 +5,22 @@ export interface Analytics {
     totalViewChapter: number;
 }
 
+export interface AnalyticsDetail {
+    userId: string;
+    username: string;
+    comicName: number;
+    chapterName: number;
+    createTime: Date;
+}
+
 export interface AnalyticsData {
     data: Analytics[];
+    currentPage: number;
+    totalPage: number;
+}
+
+export interface AnalyticsDetailData {
+    data: AnalyticsDetail[];
     currentPage: number;
     totalPage: number;
 }
