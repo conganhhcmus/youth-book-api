@@ -27,8 +27,8 @@ export const exportAnalyticsDetail = async (userId: string, type: number): Promi
     } as Style;
 
     worksheet.columns = [
-        { header: 'Stt', key: 'index', width: 20, style: defaultStyle },
-        { header: 'Tài khoản', key: 'username', width: 20, style: defaultStyle },
+        { header: 'Stt', key: 'index', width: 10, style: defaultStyle },
+        { header: 'Tài khoản', key: 'username', width: 35, style: defaultStyle },
         { header: 'Tên truyện', key: 'comicName', width: 35, style: defaultStyle },
         { header: 'Tên chương', key: 'chapterName', width: 60, style: defaultStyle },
         { header: 'Xem lúc', key: 'createTime', width: 30, style: defaultStyle },
