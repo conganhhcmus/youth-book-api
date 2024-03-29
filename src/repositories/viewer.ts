@@ -166,7 +166,7 @@ export const getViewerDetailByUserId = async (userId: string, q: string, page: n
     return { data: result, totalPage: Math.ceil(allViewerGroupList.length / DEFAULT_PAGE_SIZE), currentPage: page } as AnalyticsDetailData;
 };
 
-export const exportViewerDetailByUserId = async (userId: string, type: number): Promise<AnalyticsDetail[]> => {
+export const getAllViewerDetailByUserId = async (userId: string, type: number): Promise<AnalyticsDetail[]> => {
     const queryUser = userId !== 'get-all' ? { userId: new Types.ObjectId(userId) } : {};
     const date = moment().utc().endOf('day').subtract(type, 'days').toDate();
     const queryTime = type !== 0 ? { createTime: { $gt: date } } : {};
