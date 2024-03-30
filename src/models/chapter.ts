@@ -9,7 +9,7 @@ const ChapterSchema = new mongoose.Schema({
     content: { type: String, required: false },
     price: { type: Number, required: false, default: 0 },
     createTime: { type: Date, required: true },
-    updateTime: { type: Date, required: false, default: moment().utc().toDate() },
+    updateTime: { type: Date, required: false, default: () => moment().utc().toDate() },
 });
 
 export default mongoose.model('Chapter', ChapterSchema);

@@ -3,7 +3,6 @@ import * as comicRepository from '@/repositories/comics';
 import * as viewerRepository from '@/repositories/viewer';
 import { Chapter, ChapterResponse } from '@/types/chapter';
 import { Viewer } from '@/types/viewer';
-import moment from 'moment';
 
 export const getAllChapterByComicId = async (page: number, q: string, comicId: string) => {
     const result = await chapterRepository.getAllChapterByComicId(page, q, comicId);
@@ -27,7 +26,6 @@ export const getChapterById = async (id: string, userId: string, skipCount: bool
         userId: userId,
         chapterId: id,
         comicId: result.comicId,
-        createTime: moment().utc().toDate(),
     } as Viewer;
 
     if (userId) {

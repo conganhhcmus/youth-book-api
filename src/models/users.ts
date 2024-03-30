@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     refreshToken: { type: String, required: false, select: false },
     isActive: { type: Boolean, required: false, default: true },
     createTime: { type: Date, required: true },
-    updateTime: { type: Date, required: false, default: moment().utc().toDate() },
+    updateTime: { type: Date, required: false, default: () => moment().utc().toDate() },
     avatarId: { type: String, required: false },
 });
 
